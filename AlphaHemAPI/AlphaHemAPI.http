@@ -1,0 +1,6 @@
+@AlphaHemAPI_HostAddress = http://localhost:5207
+
+GET {{AlphaHemAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

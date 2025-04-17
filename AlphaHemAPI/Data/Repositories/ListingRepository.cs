@@ -10,7 +10,7 @@ namespace AlphaHemAPI.Data.Repositories
 
         public ListingRepository(AlphaHemAPIDbContext ctx) :base(ctx)
         {
-            this._ctx = ctx;
+           _ctx = ctx;
         }
 
         // Author : Smilla
@@ -20,6 +20,16 @@ namespace AlphaHemAPI.Data.Repositories
                              .Include(l => l.Municipality)
                              .Include(l => l.Realtor)
                              .ToListAsync();
+        }
+
+        // Author : Smilla
+        public async Task<Listing> GetByIdWithIncludesAsync(int id)
+        {
+            return await _ctx.Listings
+                        .Include(l => l.Municipality)
+                        .Include(l => l.Realtor)
+                        .ThenInclude(r => r.Agency)
+                        .FirstOrDefaultAsync(l => l.Id == id);
         }
     }
 }

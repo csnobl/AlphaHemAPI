@@ -23,5 +23,16 @@ namespace AlphaHemAPI.Services
             var listings = await listingRepository.GetAllWithIncludesAsync();
             return mapper.Map<List<ListingListDto>>(listings);
         }
+
+        // Author : Smilla
+        public async Task<ListingDetailsDto> GetListingDetailsAsync(int id)
+        {
+            var listing = await listingRepository.GetByIdWithIncludesAsync(id);
+            if (listing == null)
+            {
+                return null;
+            }
+            return mapper.Map<ListingDetailsDto>(listing);
+        }
     }
 }

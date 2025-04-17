@@ -9,15 +9,32 @@ namespace AlphaHemAPI.Mappings
     {
         public ListingProfile()
         {
-            // Mapping for the list of listings
+            // Mapping for list of listing
             CreateMap<Listing, ListingListDto>()
-            .ForMember(d => d.Municipality,
-                       o => o.MapFrom(s => s.Municipality.Name))
-            .ForMember(d => d.RealtorFullName,
-                       o => o.MapFrom(s => s.Realtor.FirstName + " " + s.Realtor.LastName))
-            .ForMember(d => d.Category,
-                       o => o.MapFrom(s => s.Category.ToString()));
+                .ForMember(d => d.Municipality,
+                           o => o.MapFrom(s => s.Municipality.Name))
+                .ForMember(d => d.RealtorFullName,
+                           o => o.MapFrom(s => s.Realtor.FirstName + " " + s.Realtor.LastName))
+                .ForMember(d => d.Category,
+                           o => o.MapFrom(s => s.Category.ToString()));
+
+            // Mapping for details of listing
+            CreateMap<Listing, ListingDetailsDto>()
+                .ForMember(d => d.MunicipalityName,
+                           o => o.MapFrom(s => s.Municipality.Name))
+                .ForMember(d => d.Category,
+                           o => o.MapFrom(s => s.Category.ToString()))
+                .ForMember(d => d.Realtor,
+                           o => o.MapFrom(s => s.Realtor));
+
+            // Mapping for realtor-info and agency-info in details of listing
+            CreateMap<Realtor, RealtorInListingDto>()
+                .ForMember(d => d.FullName,
+                           o => o.MapFrom(s => s.FirstName + " " + s.LastName))
+                .ForMember(d => d.AgencyName,
+                           o => o.MapFrom(s => s.Agency.Name))
+                .ForMember(d => d.AgencyLogo,
+                           o => o.MapFrom(s => s.Agency.Logo));
         }
     }
 }
-

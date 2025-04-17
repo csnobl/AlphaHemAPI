@@ -25,8 +25,7 @@ namespace AlphaHemAPI
 
             //Repositories
             builder.Services.AddScoped<IRepository<Agency>, AgencyRepository>();
-            builder.Services.AddScoped<IListingRepository, ListingRepository>(); // Author : Smilla
-            builder.Services.AddScoped<IRepository<Listing>, ListingRepository>();
+            builder.Services.AddScoped<IListingRepository, ListingRepository>(); // Co-author : Smilla
             builder.Services.AddScoped<IRepository<Realtor>, RealtorRepository>();
             builder.Services.AddScoped<IRepository<Municipality>, MunicipalityRepository>();
             //Service layers
@@ -45,15 +44,13 @@ namespace AlphaHemAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            //// Author: Mattias, Christoffer, Dominika, Conny
-            //
-            using (var scope = app.Services.CreateScope())
+
+            using (var scope = app.Services.CreateScope()) // Author: Mattias, Christoffer, Dominika, Conny
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<AlphaHemAPIDbContext>();
                 await SeedData.Initialize(context);
             }
-            //
 
             app.UseHttpsRedirection();
 

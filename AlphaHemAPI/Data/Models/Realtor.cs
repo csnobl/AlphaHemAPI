@@ -1,5 +1,6 @@
 ﻿namespace AlphaHemAPI.Data.Models
 {
+    //Author : ALL
     public class Realtor
     {
         public int Id { get; set; }

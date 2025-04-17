@@ -10,11 +10,15 @@ namespace AlphaHemAPI.Services
     {
         private readonly IListingRepository listingRepository;
         private readonly IMapper mapper;
+        private readonly IRepository<Municipality> municipalityRepository;
+        private readonly IRepository<Realtor> realtorRepository;
 
-        public ListingService(IListingRepository listingRepository, IMapper mapper)
+        public ListingService(IListingRepository listingRepository, IMapper mapper, IRepository<Municipality> municipalityRepository, IRepository<Realtor> realtorRepository)
         {
             this.listingRepository = listingRepository;
             this.mapper = mapper;
+            this.municipalityRepository = municipalityRepository;
+            this.realtorRepository = realtorRepository;
         }
 
         // Author : Smilla
@@ -33,6 +37,33 @@ namespace AlphaHemAPI.Services
                 return null;
             }
             return mapper.Map<ListingDetailsDto>(listing);
+        }
+
+        // Author: Conny
+        public async Task<bool> AddListingAsync(ListingCreateDto listingCreateDto)
+        {
+            // Map DTO -> Model
+            var listing = mapper.Map<Listing>(listingCreateDto);
+
+            // Fetch related entities using DTO IDs to set navigation properties
+            var realtor = await realtorRepository.GetAsync(listingCreateDto.RealtorId);
+            var municipality = await municipalityRepository.GetAsync(listingCreateDto.MunicipalityId);
+
+            if (realtor == null || municipality == null)
+                return false;
+
+            listing.Realtor = realtor;
+            listing.Municipality = municipality;
+
+            try
+            {
+                await listingRepository.AddAsync(listing);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -35,6 +35,10 @@ namespace AlphaHemAPI.Mappings
                            o => o.MapFrom(s => s.Agency.Name))
                 .ForMember(d => d.AgencyLogo,
                            o => o.MapFrom(s => s.Agency.Logo));
+
+            // Author: Conny
+            // Mapping for creating a listing
+            CreateMap<ListingCreateDto, Listing>();
         }
     }
 }

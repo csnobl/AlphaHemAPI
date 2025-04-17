@@ -5,9 +5,9 @@ using AutoMapper;
 namespace AlphaHemAPI.Mappings
 {
     // Author : Smilla
-    public class AutomapperProfile : Profile
+    public class ListingProfile : Profile
     {
-        public AutomapperProfile()
+        public ListingProfile()
         {
             // Mapping for the list of listings
             CreateMap<Listing, ListingListDto>()

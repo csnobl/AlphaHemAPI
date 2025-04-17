@@ -25,6 +25,7 @@ namespace AlphaHemAPI
 
             //Repositories
             builder.Services.AddScoped<IRepository<Agency>, AgencyRepository>();
+            builder.Services.AddScoped<IListingRepository, ListingRepository>(); // Author : Smilla
             builder.Services.AddScoped<IRepository<Listing>, ListingRepository>();
             builder.Services.AddScoped<IRepository<Realtor>, RealtorRepository>();
             builder.Services.AddScoped<IRepository<Municipality>, MunicipalityRepository>();

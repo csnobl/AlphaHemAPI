@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AlphaHemAPI.Data
 {
+    //Author : ALL
     public class AlphaHemAPIDbContext : DbContext
     {
-        public AlphaHemAPIDbContext() : base()
+        public AlphaHemAPIDbContext(DbContextOptions<AlphaHemAPIDbContext> options) : base(options)
         {   
         }
 

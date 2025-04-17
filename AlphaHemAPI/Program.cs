@@ -10,7 +10,7 @@ namespace AlphaHemAPI
     //Author : ALL
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +25,7 @@ namespace AlphaHemAPI
 
             //Repositories
             builder.Services.AddScoped<IRepository<Agency>, AgencyRepository>();
-            builder.Services.AddScoped<IListingRepository, ListingRepository>(); // Author : Smilla
-            builder.Services.AddScoped<IRepository<Listing>, ListingRepository>();
+            builder.Services.AddScoped<IListingRepository, ListingRepository>(); // Co-author : Smilla
             builder.Services.AddScoped<IRepository<Realtor>, RealtorRepository>();
             builder.Services.AddScoped<IRepository<Municipality>, MunicipalityRepository>();
             //Service layers
@@ -44,6 +43,13 @@ namespace AlphaHemAPI
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            }
+
+            using (var scope = app.Services.CreateScope()) // Author: Mattias, Christoffer, Dominika, Conny
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<AlphaHemAPIDbContext>();
+                await SeedData.Initialize(context);
             }
 
             app.UseHttpsRedirection();

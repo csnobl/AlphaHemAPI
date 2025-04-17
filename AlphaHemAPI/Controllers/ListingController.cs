@@ -15,5 +15,13 @@ namespace AlphaHemAPI.Controllers
         {
             this.listingService = listingService;
         }
+
+        // Author : Smilla
+        [HttpGet]
+        public async Task<IActionResult> GetAllListings()
+        {
+            var listings = await listingService.GetAllListingsAsync();
+            return Ok(listings);
+        }
     }
 }

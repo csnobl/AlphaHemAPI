@@ -23,7 +23,8 @@ namespace AlphaHemAPI.Data.Repositories
         }
 
         // Author : Smilla
-        public async Task<Listing> GetByIdWithIncludesAsync(int id)
+        // Co-author: Conny
+        public async Task<Listing?> GetByIdWithIncludesAsync(int id)
         {
             return await _ctx.Listings
                         .Include(l => l.Municipality)

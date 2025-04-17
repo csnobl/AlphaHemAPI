@@ -10,7 +10,7 @@ namespace AlphaHemAPI
     //Author : ALL
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +44,15 @@ namespace AlphaHemAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            //// Author: Mattias, Christoffer, Dominika, Conny
+            //
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<AlphaHemAPIDbContext>();
+                await SeedData.Initialize(context);
+            }
+            //
 
             app.UseHttpsRedirection();
 

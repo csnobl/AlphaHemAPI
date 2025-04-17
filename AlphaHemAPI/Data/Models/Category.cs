@@ -3,9 +3,9 @@
     //Author : ALL
     public enum Category
     {
-        Bostadsrättsradhus,
-        Bostadsrättslägenhet,
-        Villa,
-        Fritidshus
+        Bostadsrättsradhus = 0,
+        Bostadsrättslägenhet = 1,
+        Villa = 2,
+        Fritidshus = 3
     }
 }

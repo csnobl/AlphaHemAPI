@@ -56,5 +56,23 @@ namespace AlphaHemAPI.Controllers
 
             return StatusCode(StatusCodes.Status201Created);
         }
+
+        // Author: Conny
+        [HttpPut]
+        public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
+        {
+            if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
+                return BadRequest("Listings require between 1 and 40 images.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await listingService.UpdateListingAsync(id, listingUpdateDto);
+
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating listing.");
+
+            return StatusCode(StatusCodes.Status201Created);
+        }
     }
 }

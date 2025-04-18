@@ -39,6 +39,11 @@ namespace AlphaHemAPI.Mappings
             // Author: Conny
             // Mapping for creating a listing
             CreateMap<ListingCreateDto, Listing>();
+
+            // Author: Conny
+            // Mapping for updating a listing. Can also be used to map fetched data when sending to client for a listing update page
+            CreateMap<ListingUpdateDto, Listing>()
+                .ReverseMap();
         }
     }
 }

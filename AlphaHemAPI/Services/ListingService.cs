@@ -65,5 +65,35 @@ namespace AlphaHemAPI.Services
             }
             return true;
         }
+
+        // Author: Conny
+        public async Task<bool> UpdateListingAsync(int id, ListingUpdateDto listingUpdateDto)
+        {
+            // Fetch listing to be updated
+            var listing = await listingRepository.GetAsync(id);
+            if (listing == null)
+                return false;
+
+            // Map DTO -> Entity
+            mapper.Map(listingUpdateDto, listing);
+
+            // Fetch related entities using DTO ID to set navigation property (in case of realtor change)
+            var realtor = await realtorRepository.GetAsync(listingUpdateDto.RealtorId);
+
+            if (realtor == null)
+                return false;
+
+            listing.Realtor = realtor;
+
+            try
+            {
+                await listingRepository.UpdateAsync(listing);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -95,5 +95,24 @@ namespace AlphaHemAPI.Services
             }
             return true;
         }
+
+        // Author: Niklas
+        public async Task<bool> DeleteListingAsync(int id)
+        {
+            
+            var listing = await listingRepository.GetAsync(id);
+            if (listing == null)
+                return false;
+
+            try
+            {
+                await listingRepository.DeleteAsync(listing);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

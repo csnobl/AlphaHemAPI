@@ -18,10 +18,11 @@ namespace AlphaHemAPI.Controllers
         }
 
         // Author : Smilla
+        // Co-author: Christoffer
         [HttpGet]
-        public async Task<IActionResult> GetAllListings()
+        public async Task<IActionResult> GetAllListings(string? municipality = null)
         {
-            var listings = await listingService.GetAllListingsAsync();
+            var listings = await listingService.GetAllListingsAsync(municipality);
             return Ok(listings);
         }
 

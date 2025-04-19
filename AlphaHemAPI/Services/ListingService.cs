@@ -22,9 +22,10 @@ namespace AlphaHemAPI.Services
         }
 
         // Author : Smilla
-        public async Task<List<ListingListDto>> GetAllListingsAsync()
+        // Co-author: Christoffer
+        public async Task<List<ListingListDto>> GetAllListingsAsync(string? municipality = null)
         {
-            var listings = await listingRepository.GetAllWithIncludesAsync();
+            var listings = await listingRepository.GetAllWithIncludesAsync(municipality);
             return mapper.Map<List<ListingListDto>>(listings);
         }
 

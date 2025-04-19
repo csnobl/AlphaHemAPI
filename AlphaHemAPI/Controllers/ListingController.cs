@@ -74,5 +74,15 @@ namespace AlphaHemAPI.Controllers
 
             return StatusCode(StatusCodes.Status201Created);
         }
+        
+        // Author: Niklas
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteListing(int id)
+        {
+            var result = await listingService.DeleteListingAsync(id);
+            if (!result)
+                return NotFound();
+            return NoContent();
+        }
     }
 }

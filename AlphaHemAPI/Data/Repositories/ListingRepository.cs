@@ -14,12 +14,20 @@ namespace AlphaHemAPI.Data.Repositories
         }
 
         // Author : Smilla
-        public async Task<List<Listing>> GetAllWithIncludesAsync()
+        // Co-author: Christoffer
+        public async Task<List<Listing>> GetAllWithIncludesAsync(string? municipality = null)
         {
-            return await _ctx.Listings
+             var query = _ctx.Listings
                              .Include(l => l.Municipality)
                              .Include(l => l.Realtor)
-                             .ToListAsync();
+                             .AsQueryable();
+
+            if (!string.IsNullOrEmpty(municipality))
+            { 
+                query = query.Where(l => l.Municipality.Name.ToLower() == municipality.ToLower());
+            }
+
+            return await query.ToListAsync();
         }
 
         // Author : Smilla

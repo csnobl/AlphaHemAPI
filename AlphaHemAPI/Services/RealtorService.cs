@@ -1,6 +1,7 @@
 ﻿using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Data.Models;
 using AlphaHemAPI.Data.Repositories;
+using AutoMapper;
 
 namespace AlphaHemAPI.Services
 {
@@ -8,10 +9,13 @@ namespace AlphaHemAPI.Services
     public class RealtorService
     {
         private readonly IRealtorRepository realtorRepository;
+        private readonly IMapper mapper;
 
-        public RealtorService(IRealtorRepository realtorRepository)
+        //Co-Author: Christoffer
+        public RealtorService(IRealtorRepository realtorRepository, IMapper mapper)
         {
             this.realtorRepository = realtorRepository;
+            this.mapper = mapper;
         }
 
         // Author : Niklas
@@ -34,6 +38,26 @@ namespace AlphaHemAPI.Services
 
             await realtorRepository.AddAsync(realtor);
             return true;
+        }
+
+        //Author: Christoffer
+        public async Task<bool> UpdateRealtorAsync(int id, RealtorUpdateDto realtorUpdateDto)
+        {
+            var realtor = await realtorRepository.GetAsync(id);
+            if (realtor == null)
+                return false;
+
+            mapper.Map(realtorUpdateDto, realtor);
+
+            try
+            {
+                await realtorRepository.UpdateAsync(realtor);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

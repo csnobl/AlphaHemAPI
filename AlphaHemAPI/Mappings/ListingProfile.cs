@@ -44,6 +44,10 @@ namespace AlphaHemAPI.Mappings
             // Mapping for updating a listing. Can also be used to map fetched data when sending to client for a listing update page
             CreateMap<ListingUpdateDto, Listing>()
                 .ReverseMap();
+
+            //Author: Christoffer
+            CreateMap<RealtorUpdateDto, Realtor>()
+                .ReverseMap();
         }
     }
 }

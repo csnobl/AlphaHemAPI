@@ -26,5 +26,20 @@ namespace AlphaHemAPI.Controllers
                 return BadRequest("Email is already taken or agency does not exist.");
             return StatusCode(StatusCodes.Status201Created);
         }
+
+        //Author: Christoffer
+        [HttpPut]
+        public async Task<IActionResult> UpdateRealtor(int id, [FromBody] RealtorUpdateDto realtorUpdateDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await realtorService.UpdateRealtorAsync(id, realtorUpdateDto);
+
+            if (!result)
+                return NotFound("Realtor not found or update failed.");
+
+            return NoContent();
+        }
     }
 }

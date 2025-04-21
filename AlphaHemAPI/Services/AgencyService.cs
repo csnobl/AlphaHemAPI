@@ -26,6 +26,16 @@ namespace AlphaHemAPI.Services
             }
             return mapper.Map<AgencyWithRealtorsDto>(agency);
         }
+        //Author: Mattias
+        public async Task<IEnumerable<AgencyWithRealtorsDto>> GetAllAgencies()
+        {
+            var agencies = await agencyRepository.GetAllAsyncIncludeRealtor();
+            if (agencies == null)
+            {
+                return null;
+            }
+            return mapper.Map<IEnumerable<AgencyWithRealtorsDto>>(agencies);
+        }
 
     }
 }

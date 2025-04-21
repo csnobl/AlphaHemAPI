@@ -1,4 +1,5 @@
-﻿using AlphaHemAPI.Services;
+﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,18 @@ namespace AlphaHemAPI.Controllers
                 return NotFound();
             }
             return Ok(agency);
+        }
+
+        //Author: Mattias
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AgencyWithRealtorsDto>>> GetAllAgencies()
+        {
+            var agencies = await agencyService.GetAllAgencies();
+            if (agencies == null)
+            {
+                return NotFound();
+            }
+            return Ok(agencies);
         }
     }
 }

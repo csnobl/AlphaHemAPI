@@ -6,5 +6,6 @@ namespace AlphaHemAPI.Data.Repositories
     public interface IAgencyRepository :IRepository<Agency>
     {
         new Task<Agency?> GetAsyncIncludeRealtor(int id);
+        new Task<IEnumerable<Agency>> GetAllAsyncIncludeRealtor();
     }
 }

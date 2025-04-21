@@ -15,5 +15,17 @@ namespace AlphaHemAPI.Controllers
         {
             this.agencyService = agencyService;
         }
+
+        //Author: Mattias
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAgency(int id)
+        {
+            var agency = await agencyService.GetAgencyById(id);
+            if (agency == null)
+            {
+                return NotFound();
+            }
+            return Ok(agency);
+        }
     }
 }

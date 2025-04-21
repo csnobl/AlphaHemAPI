@@ -24,7 +24,7 @@ namespace AlphaHemAPI
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             //Repositories
-            builder.Services.AddScoped<IRepository<Agency>, AgencyRepository>();
+            builder.Services.AddScoped<IAgencyRepository, AgencyRepository>();
             builder.Services.AddScoped<IListingRepository, ListingRepository>(); // Co-author : Smilla
             builder.Services.AddScoped<IRealtorRepository, RealtorRepository>();
             

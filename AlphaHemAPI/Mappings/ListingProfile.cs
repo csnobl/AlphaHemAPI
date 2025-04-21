@@ -48,6 +48,9 @@ namespace AlphaHemAPI.Mappings
             //Author: Christoffer
             CreateMap<RealtorUpdateDto, Realtor>()
                 .ReverseMap();
+
+            //Author: Christoffer
+            CreateMap<Municipality, MunicipalityListDto>();
         }
     }
 }

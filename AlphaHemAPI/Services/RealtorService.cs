@@ -59,5 +59,12 @@ namespace AlphaHemAPI.Services
                 return false;
             }
         }
+
+        //Author : Dominika
+        public async Task<List<RealtorDto>> GetAllRealtorsAsync()
+        {
+            var realtors = await realtorRepository.GetAllWithAgencyAsync();
+            return mapper.Map<List<RealtorDto>>(realtors);
+        }
     }
 }

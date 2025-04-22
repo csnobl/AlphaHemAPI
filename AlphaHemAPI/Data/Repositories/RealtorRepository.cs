@@ -18,5 +18,13 @@ namespace AlphaHemAPI.Data.Repositories
         {
             return await _ctx.Realtors.FirstOrDefaultAsync(e => e.Email == email);
         }
+
+        //Author : Dominika
+        public async Task<List<Realtor>> GetAllWithAgencyAsync()
+        {
+            return await _ctx.Realtors
+                .Include(r => r.Agency)
+                .ToListAsync();
+        }
     }
 }

@@ -41,5 +41,13 @@ namespace AlphaHemAPI.Controllers
 
             return NoContent();
         }
+
+        //Author : Dominika
+        [HttpGet]
+        public async Task<ActionResult<List<RealtorDto>>> GetAllRealtors()
+        {
+            var realtors = await realtorService.GetAllRealtorsAsync();
+            return Ok(realtors);
+        }
     }
 }

@@ -14,6 +14,15 @@ namespace AlphaHemAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhostClient", policy =>
+                {
+                    policy.WithOrigins("https://localhost:7054") // Blazor-klientens IP+port
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
             // Add services to the container.
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddControllers();
@@ -56,6 +65,8 @@ namespace AlphaHemAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowLocalhostClient");
 
             app.UseAuthorization();
 

@@ -23,14 +23,30 @@ namespace AlphaHemAPI.Services
 
         // Author : Smilla
         // Co-author: Christoffer
-        public async Task<List<ListingListDto>> GetAllListingsAsync(string? municipality = null)
+        public async Task<PagedListingListDto> GetPagedListingsAsync(int pageIndex, int pageSize, string? municipality = null, string? sortBy = null)
         {
-            var listings = await listingRepository.GetAllWithIncludesAsync(municipality);
-            return mapper.Map<List<ListingListDto>>(listings);
-        }
+            try
+                { 
+            var (listings, totalCount) = await listingRepository.GetPagedListingsWithIncludesAsync(pageIndex, pageSize, municipality, sortBy);
 
-        // Author : Smilla
-        public async Task<ListingDetailsDto> GetListingDetailsAsync(int id)
+            var listingDtos = mapper.Map<List<ListingListDto>>(listings);
+
+            var pagedListingListDto = mapper.Map<PagedListingListDto>(listingDtos);
+
+            pagedListingListDto.TotalCount = totalCount;
+            pagedListingListDto.PageSize = pageSize;
+            pagedListingListDto.CurrentPage = pageIndex;
+
+            return pagedListingListDto;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching listings.", ex);
+            }
+
+        }
+        
+            public async Task<ListingDetailsDto> GetListingDetailsAsync(int id)
         {
             var listing = await listingRepository.GetByIdWithIncludesAsync(id);
             if (listing == null)

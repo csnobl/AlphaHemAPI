@@ -7,7 +7,11 @@ namespace AlphaHemAPI.Data.Repositories
     // Co-author: Christoffer
     public interface IListingRepository : IRepository<Listing>
     {
-        Task<List<Listing>> GetAllWithIncludesAsync(string? municipality = null);
+        Task<(List<Listing> Listings, int TotalCount)> GetPagedListingsWithIncludesAsync(
+            int pageIndex,
+            int pageSize,
+            string? municipality = null,
+            string? sortBy = null);
         Task<Listing?> GetByIdWithIncludesAsync(int id);
     }
 }

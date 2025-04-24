@@ -15,19 +15,40 @@ namespace AlphaHemAPI.Data.Repositories
 
         // Author : Smilla
         // Co-author: Christoffer
-        public async Task<List<Listing>> GetAllWithIncludesAsync(string? municipality = null)
+        public async Task<(List<Listing> Listings, int TotalCount)> GetPagedListingsWithIncludesAsync(
+            int pageIndex,
+            int pageSize,
+            string? municipality = null,
+            string? sortBy = null)
+
         {
              var query = _ctx.Listings
-                             .Include(l => l.Municipality)
-                             .Include(l => l.Realtor)
-                             .AsQueryable();
+                .Include(l => l.Municipality)
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(municipality))
             { 
-                query = query.Where(l => l.Municipality.Name.ToLower() == municipality.ToLower());
+                query = query.Where(l => EF.Functions.Like(l.Municipality.Name, municipality));
             }
 
-            return await query.ToListAsync();
+                query = (sortBy?.ToLower()) switch
+                {
+                    "price" => query.OrderBy(l => l.Price),
+                    "price_desc" => query.OrderByDescending(l => l.Price),
+                    "category" => query.OrderBy(l => l.Category),
+                    "category_desc" => query.OrderByDescending(l => l.Category),
+                    _ => query.OrderByDescending(l => l.Id)
+                };
+
+            int totalCount = await query.CountAsync();
+
+            var listings = await query
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .Include(l => l.Realtor)
+                .ToListAsync();
+
+            return (listings, totalCount);
         }
 
         // Author : Smilla

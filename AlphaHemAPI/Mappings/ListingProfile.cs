@@ -51,6 +51,12 @@ namespace AlphaHemAPI.Mappings
 
             //Author: Christoffer
             CreateMap<Municipality, MunicipalityListDto>();
+
+            // Author: Christoffer
+            CreateMap<List<ListingListDto>, PagedListingListDto>()
+                .ForMember(dest => dest.Listings,
+                           opt => opt.MapFrom(src => src));
+                    
         }
     }
 }

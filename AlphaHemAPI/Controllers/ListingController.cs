@@ -37,64 +37,72 @@ namespace AlphaHemAPI.Controllers
             }
         }
 
-            // Author : Smilla
-            [HttpGet("{id}")]
-            public async Task<IActionResult> GetListingDetails(int id)
+        // Author : Smilla
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetListingDetails(int id)
+        {
+            var listingDetails = await listingService.GetListingDetailsAsync(id);
+
+            if (listingDetails == null)
             {
-                var listingDetails = await listingService.GetListingDetailsAsync(id);
-
-                if (listingDetails == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(listingDetails);
+                return NotFound();
             }
 
-            // Author: Conny
-            [HttpPost]
-            public async Task<IActionResult> CreateListing([FromBody] ListingCreateDto listingCreateDto)
-            {
-                if (listingCreateDto.Images == null || listingCreateDto.Images.Count == 0 || listingCreateDto.Images.Count > 40)
-                    return BadRequest("Listings require between 1 and 40 images.");
+            return Ok(listingDetails);
+        }
 
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+        // Author: Conny
+        [HttpPost]
+        public async Task<IActionResult> CreateListing([FromBody] ListingCreateDto listingCreateDto)
+        {
+            if (listingCreateDto.Images == null || listingCreateDto.Images.Count == 0 || listingCreateDto.Images.Count > 40)
+                return BadRequest("Listings require between 1 and 40 images.");
 
-                var result = await listingService.AddListingAsync(listingCreateDto);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                if (!result)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error creating listing.");
+            var result = await listingService.AddListingAsync(listingCreateDto);
 
-                return StatusCode(StatusCodes.Status201Created);
-            }
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating listing.");
 
-            // Author: Conny
-            [HttpPut]
-            public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
-            {
-                if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
-                    return BadRequest("Listings require between 1 and 40 images.");
+            return StatusCode(StatusCodes.Status201Created);
+        }
 
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+        // Author: Conny
+        [HttpPut]
+        public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
+        {
+            if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
+                return BadRequest("Listings require between 1 and 40 images.");
 
-                var result = await listingService.UpdateListingAsync(id, listingUpdateDto);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                if (!result)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error updating listing.");
+            var result = await listingService.UpdateListingAsync(id, listingUpdateDto);
 
-                return StatusCode(StatusCodes.Status201Created);
-            }
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating listing.");
 
-            // Author: Niklas
-            [HttpDelete("{id}")]
-            public async Task<IActionResult> DeleteListing(int id)
-            {
-                var result = await listingService.DeleteListingAsync(id);
-                if (!result)
-                    return NotFound();
-                return NoContent();
-            }
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
+        // Author: Niklas
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteListing(int id)
+        {
+            var result = await listingService.DeleteListingAsync(id);
+            if (!result)
+                return NotFound();
+            return NoContent();
+        }
+
+        // Author: Conny
+        [HttpGet("realtor/{id}")]
+        public async Task<IActionResult> GetListingsByRealtor(int id)
+        {
+            var listingsDto = await listingService.GetListingsByRealtorAsync(id);
+            return Ok(listingsDto);
         }
     }
+}

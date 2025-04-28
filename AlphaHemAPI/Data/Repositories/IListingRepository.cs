@@ -3,8 +3,7 @@
 namespace AlphaHemAPI.Data.Repositories
 {
     // Author : Smilla
-    // Co-author: Conny
-    // Co-author: Christoffer
+    // Co-author: Conny, Christoffer
     public interface IListingRepository : IRepository<Listing>
     {
         Task<(List<Listing> Listings, int TotalCount)> GetPagedListingsWithIncludesAsync(
@@ -13,5 +12,6 @@ namespace AlphaHemAPI.Data.Repositories
             string? municipality = null,
             string? sortBy = null);
         Task<Listing?> GetByIdWithIncludesAsync(int id);
+        Task<List<Listing>> GetListingsByRealtorAsync(int id);
     }
 }

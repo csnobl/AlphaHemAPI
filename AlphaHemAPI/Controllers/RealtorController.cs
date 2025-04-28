@@ -49,5 +49,15 @@ namespace AlphaHemAPI.Controllers
             var realtors = await realtorService.GetAllRealtorsAsync();
             return Ok(realtors);
         }
+
+        //Author : Smilla
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRealtorById(int id)
+        {
+            var realtor = await realtorService.GetRealtorByIdAsync(id);
+            if (realtor == null)
+                return NotFound("Realtor not found.");
+            return Ok(realtor);
+        }
     }
 }

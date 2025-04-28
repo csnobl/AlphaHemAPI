@@ -4,9 +4,12 @@ namespace AlphaHemAPI.Data.Repositories
 {
     // Author : Niklas
     // Co-Author : Dominika
+    // Co-Author : Smilla
     public interface IRealtorRepository :IRepository<Realtor>
     {
         Task<Realtor?> GetByEmailAsync(string email);
         Task<List<Realtor>> GetAllWithAgencyAsync();
+
+        Task<Realtor?> GetByIdWithAgencyAsync(int id);
     }
 }

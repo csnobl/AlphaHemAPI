@@ -65,6 +65,7 @@ namespace AlphaHemAPI.Data
                         Email = "anna.svensson@sunsetrealty.se",
                         PhoneNumber = "+46 70 123 45 67",
                         ProfilePicture = "https://i.imgur.com/hXvWF5S.png",
+                        Password = "Test1234",
                         Agency = agencies.FirstOrDefault(a => a.Name == "Sunset Realty")
                     },
                     new Realtor
@@ -74,6 +75,7 @@ namespace AlphaHemAPI.Data
                         Email = "erik.lindberg@urbannest.se",
                         PhoneNumber = "+46 70 234 56 78",
                         ProfilePicture = "https://i.imgur.com/zFOGna5.jpeg",
+                        Password = "Test1234",
                         Agency = agencies.FirstOrDefault(a => a.Name == "Urban Nest")
                     },
                     new Realtor
@@ -83,6 +85,7 @@ namespace AlphaHemAPI.Data
                         Email = "sara.nystrom@mountainview.se",
                         PhoneNumber = "+46 70 345 67 89",
                         ProfilePicture = "https://i.imgur.com/lmmEbEs.png",
+                        Password = "Test1234",
                         Agency = agencies.FirstOrDefault(a => a.Name == "Mountain View Estates")
                     },
                     new Realtor
@@ -92,6 +95,7 @@ namespace AlphaHemAPI.Data
                         Email = "jonas.ekstrom@eliteproperty.se",
                         PhoneNumber = "+46 70 456 78 90",
                         ProfilePicture = "https://i.imgur.com/cQ3xVSL.png",
+                        Password = "Test1234",
                         Agency = agencies.FirstOrDefault(a => a.Name == "Elite Property Group")
                     },
                     new Realtor
@@ -101,6 +105,7 @@ namespace AlphaHemAPI.Data
                         Email = "elin.karlsson@greenleaf.se",
                         PhoneNumber = "+46 70 567 89 01",
                         ProfilePicture = "",
+                        Password = "Test1234",
                         Agency = agencies.FirstOrDefault(a => a.Name == "GreenLeaf Homes")
                     }
                 };

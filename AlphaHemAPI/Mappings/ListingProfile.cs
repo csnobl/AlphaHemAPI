@@ -16,7 +16,9 @@ namespace AlphaHemAPI.Mappings
                 .ForMember(d => d.RealtorFullName,
                            o => o.MapFrom(s => s.Realtor.FirstName + " " + s.Realtor.LastName))
                 .ForMember(d => d.Category,
-                           o => o.MapFrom(s => s.Category.ToString()));
+                           o => o.MapFrom(s => s.Category.ToString()))
+                .ForMember(d => d.FirstImage,
+                       o => o.MapFrom(s => s.Images.FirstOrDefault())); // Author: Christoffer
 
             // Mapping for details of listing
             CreateMap<Listing, ListingDetailsDto>()

@@ -66,5 +66,14 @@ namespace AlphaHemAPI.Services
             var realtors = await realtorRepository.GetAllWithAgencyAsync();
             return mapper.Map<List<RealtorDto>>(realtors);
         }
+
+        //Author : Smilla
+        public async Task<RealtorDto?> GetRealtorByIdAsync(int id)
+        {
+            var realtor = await realtorRepository.GetByIdWithAgencyAsync(id);
+            if (realtor == null)
+                return null;
+            return mapper.Map<RealtorDto>(realtor);
+        }
     }
 }

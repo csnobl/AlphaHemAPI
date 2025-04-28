@@ -61,5 +61,14 @@ namespace AlphaHemAPI.Data.Repositories
                         .ThenInclude(r => r.Agency)
                         .FirstOrDefaultAsync(l => l.Id == id);
         }
+
+        // Author: Conny
+        public async Task<List<Listing>> GetListingsByRealtorAsync(int id)
+        {
+            return await _ctx.Listings
+                .Include(l => l.Municipality)
+                .Where(l => l.RealtorId == id)
+                .ToListAsync();
+        }
     }
 }

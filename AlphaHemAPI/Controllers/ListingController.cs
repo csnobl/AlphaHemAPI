@@ -70,31 +70,39 @@ namespace AlphaHemAPI.Controllers
         }
 
         // Author: Conny
-        [HttpPut("{id}")]
-            public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
-            {
-                if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
-                    return BadRequest("Listings require between 1 and 40 images.");
+        [HttpPut]
+        public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
+        {
+            if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
+                return BadRequest("Listings require between 1 and 40 images.");
 
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                var result = await listingService.UpdateListingAsync(id, listingUpdateDto);
+            var result = await listingService.UpdateListingAsync(id, listingUpdateDto);
 
-                if (!result)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error updating listing.");
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating listing.");
 
-                return StatusCode(StatusCodes.Status201Created);
-            }
+            return StatusCode(StatusCodes.Status201Created);
+        }
 
-            // Author: Niklas
-            [HttpDelete("{id}")]
-            public async Task<IActionResult> DeleteListing(int id)
-            {
-                var result = await listingService.DeleteListingAsync(id);
-                if (!result)
-                    return NotFound();
-                return NoContent();
-            }
+        // Author: Niklas
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteListing(int id)
+        {
+            var result = await listingService.DeleteListingAsync(id);
+            if (!result)
+                return NotFound();
+            return NoContent();
+        }
+
+        // Author: Conny
+        [HttpGet("realtor/{id}")]
+        public async Task<IActionResult> GetListingsByRealtor(int id)
+        {
+            var listingsDto = await listingService.GetListingsByRealtorAsync(id);
+            return Ok(listingsDto);
         }
     }
+}

@@ -2,6 +2,7 @@
 using AlphaHemAPI.Data.Models;
 using AlphaHemAPI.Data.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace AlphaHemAPI.Services
 {
@@ -26,18 +27,18 @@ namespace AlphaHemAPI.Services
         public async Task<PagedListingListDto> GetPagedListingsAsync(int pageIndex, int pageSize, string? municipality = null, string? sortBy = null)
         {
             try
-                { 
-            var (listings, totalCount) = await listingRepository.GetPagedListingsWithIncludesAsync(pageIndex, pageSize, municipality, sortBy);
+            {
+                var (listings, totalCount) = await listingRepository.GetPagedListingsWithIncludesAsync(pageIndex, pageSize, municipality, sortBy);
 
-            var listingDtos = mapper.Map<List<ListingListDto>>(listings);
+                var listingDtos = mapper.Map<List<ListingListDto>>(listings);
 
-            var pagedListingListDto = mapper.Map<PagedListingListDto>(listingDtos);
+                var pagedListingListDto = mapper.Map<PagedListingListDto>(listingDtos);
 
-            pagedListingListDto.TotalCount = totalCount;
-            pagedListingListDto.PageSize = pageSize;
-            pagedListingListDto.CurrentPage = pageIndex;
+                pagedListingListDto.TotalCount = totalCount;
+                pagedListingListDto.PageSize = pageSize;
+                pagedListingListDto.CurrentPage = pageIndex;
 
-            return pagedListingListDto;
+                return pagedListingListDto;
             }
             catch (Exception ex)
             {
@@ -45,8 +46,8 @@ namespace AlphaHemAPI.Services
             }
 
         }
-        
-            public async Task<ListingDetailsDto> GetListingDetailsAsync(int id)
+
+        public async Task<ListingDetailsDto> GetListingDetailsAsync(int id)
         {
             var listing = await listingRepository.GetByIdWithIncludesAsync(id);
             if (listing == null)
@@ -116,7 +117,7 @@ namespace AlphaHemAPI.Services
         // Author: Niklas
         public async Task<bool> DeleteListingAsync(int id)
         {
-            
+
             var listing = await listingRepository.GetAsync(id);
             if (listing == null)
                 return false;
@@ -130,6 +131,16 @@ namespace AlphaHemAPI.Services
                 return false;
             }
             return true;
+        }
+
+        // Author: Conny
+        public async Task<List<ListingListDto>> GetListingsByRealtorAsync(int realtorId)
+        {
+            var listings = await listingRepository.GetListingsByRealtorAsync(realtorId);
+
+            var listingDtos = mapper.Map<List<ListingListDto>>(listings);
+
+            return listingDtos;
         }
     }
 }

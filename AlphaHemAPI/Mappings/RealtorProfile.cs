@@ -6,12 +6,12 @@ namespace AlphaHemAPI.Mappings
 {
     public class RealtorProfile : Profile
     {
-        //Author : Dominika
+        // Author : Dominika
+        // Co-author: Conny
         public RealtorProfile()
         {
             CreateMap<Realtor, RealtorDto>()
-                .ForMember(dest => dest.Agency, opt => opt.MapFrom(src => src.Agency.Name))
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+                .ForMember(dest => dest.Agency, opt => opt.MapFrom(src => src.Agency.Name));
         }
     }
 }

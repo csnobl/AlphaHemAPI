@@ -28,7 +28,8 @@ namespace AlphaHemAPI.Controllers
         }
 
         //Author: Christoffer
-        [HttpPut]
+        // Co-author: Conny
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRealtor(int id, [FromBody] RealtorUpdateDto realtorUpdateDto)
         {
             if (!ModelState.IsValid)

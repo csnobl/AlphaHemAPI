@@ -28,7 +28,7 @@ namespace AlphaHemAPI.Data.Repositories
         }
 
         //Author : Smilla
-        public async Task<Realtor?> GetByIdWithAgencyAsync(int id)
+        public async Task<Realtor?> GetByIdWithAgencyAsync(string id)
         {
             return await _ctx.Realtors
                 .Include(r => r.Agency)

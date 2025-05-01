@@ -12,6 +12,6 @@ namespace AlphaHemAPI.Data.Repositories
             string? municipality = null,
             string? sortBy = null);
         Task<Listing?> GetByIdWithIncludesAsync(int id);
-        Task<List<Listing>> GetListingsByRealtorAsync(int id);
+        Task<List<Listing>> GetListingsByRealtorAsync(string id);
     }
 }

@@ -53,7 +53,7 @@ namespace AlphaHemAPI.Controllers
 
         //Author : Smilla
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRealtorById(int id)
+        public async Task<IActionResult> GetRealtorById(string id)
         {
             var realtor = await realtorService.GetRealtorByIdAsync(id);
             if (realtor == null)

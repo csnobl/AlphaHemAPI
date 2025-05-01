@@ -10,6 +10,6 @@ namespace AlphaHemAPI.Data.Repositories
         Task<Realtor?> GetByEmailAsync(string email);
         Task<List<Realtor>> GetAllWithAgencyAsync();
 
-        Task<Realtor?> GetByIdWithAgencyAsync(int id);
+        Task<Realtor?> GetByIdWithAgencyAsync(string id);
     }
 }

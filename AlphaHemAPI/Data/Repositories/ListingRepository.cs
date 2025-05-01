@@ -63,7 +63,7 @@ namespace AlphaHemAPI.Data.Repositories
         }
 
         // Author: Conny
-        public async Task<List<Listing>> GetListingsByRealtorAsync(int id)
+        public async Task<List<Listing>> GetListingsByRealtorAsync(string id)
         {
             return await _ctx.Listings
                 .Include(l => l.Municipality)

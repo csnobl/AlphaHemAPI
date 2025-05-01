@@ -22,7 +22,7 @@
         //Navigation properties
         public int MunicipalityId { get; set; }
         public Municipality Municipality { get; set; }
-        public int RealtorId { get; set; }
+        public string RealtorId { get; set; }
         public Realtor Realtor { get; set; }
     }
 }

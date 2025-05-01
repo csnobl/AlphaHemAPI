@@ -4,6 +4,7 @@ using AlphaHemAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlphaHemAPI.Migrations
 {
     [DbContext(typeof(AlphaHemAPIDbContext))]
-    partial class AlphaHemAPIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250501080713_FreshMigrationIdentity")]
+    partial class FreshMigrationIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,8 +88,10 @@ namespace AlphaHemAPI.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("RealtorId")
-                        .IsRequired()
+                    b.Property<int>("RealtorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RealtorId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Rooms")
@@ -105,7 +110,7 @@ namespace AlphaHemAPI.Migrations
 
                     b.HasIndex("MunicipalityId");
 
-                    b.HasIndex("RealtorId");
+                    b.HasIndex("RealtorId1");
 
                     b.ToTable("Listings");
                 });
@@ -181,6 +186,7 @@ namespace AlphaHemAPI.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfilePicture")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -351,9 +357,7 @@ namespace AlphaHemAPI.Migrations
 
                     b.HasOne("AlphaHemAPI.Data.Models.Realtor", "Realtor")
                         .WithMany("Listings")
-                        .HasForeignKey("RealtorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RealtorId1");
 
                     b.Navigation("Municipality");
 

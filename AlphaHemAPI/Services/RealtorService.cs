@@ -33,7 +33,6 @@ namespace AlphaHemAPI.Services
                 PhoneNumber = registerDto.PhoneNumber,
                 AgencyId = registerDto.AgencyId,
                 ProfilePicture = "",
-                Password = registerDto.Password,
             };
 
             await realtorRepository.AddAsync(realtor);
@@ -68,7 +67,7 @@ namespace AlphaHemAPI.Services
         }
 
         //Author : Smilla
-        public async Task<RealtorDto?> GetRealtorByIdAsync(int id)
+        public async Task<RealtorDto?> GetRealtorByIdAsync(string id)
         {
             var realtor = await realtorRepository.GetByIdWithAgencyAsync(id);
             if (realtor == null)

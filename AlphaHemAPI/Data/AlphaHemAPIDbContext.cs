@@ -1,10 +1,11 @@
 ﻿using AlphaHemAPI.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlphaHemAPI.Data
 {
     //Author : ALL
-    public class AlphaHemAPIDbContext : DbContext
+    public class AlphaHemAPIDbContext : IdentityDbContext<Realtor>
     {
         public AlphaHemAPIDbContext(DbContextOptions<AlphaHemAPIDbContext> options) : base(options)
         {   

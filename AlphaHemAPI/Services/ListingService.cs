@@ -134,7 +134,7 @@ namespace AlphaHemAPI.Services
         }
 
         // Author: Conny
-        public async Task<List<ListingListDto>> GetListingsByRealtorAsync(int realtorId)
+        public async Task<List<ListingListDto>> GetListingsByRealtorAsync(string realtorId)
         {
             var listings = await listingRepository.GetListingsByRealtorAsync(realtorId);
 

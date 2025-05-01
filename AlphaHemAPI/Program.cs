@@ -1,9 +1,14 @@
 
+using System.Text;
 using AlphaHemAPI.Data;
 using AlphaHemAPI.Data.Models;
 using AlphaHemAPI.Data.Repositories;
 using AlphaHemAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AlphaHemAPI
 {
@@ -32,6 +37,10 @@ namespace AlphaHemAPI
             builder.Services.AddDbContext<AlphaHemAPIDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+            builder.Services.AddIdentityCore<Realtor>().AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<AlphaHemAPIDbContext>(); //Co-Author : All
+
             //Repositories
             builder.Services.AddScoped<IAgencyRepository, AgencyRepository>();
             builder.Services.AddScoped<IListingRepository, ListingRepository>(); // Co-author : Smilla
@@ -46,7 +55,27 @@ namespace AlphaHemAPI
             builder.Services.AddScoped<ListingService>();
             builder.Services.AddScoped<AgencyService>();
             builder.Services.AddScoped<MunicipalityService>();
+            builder.Services.AddScoped<AuthService>();
 
+            //Author: ALL
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+                    ValidAudience = builder.Configuration["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:key"]))
+                };
+            });
 
             var app = builder.Build();
 
@@ -68,6 +97,7 @@ namespace AlphaHemAPI
 
             app.UseCors("AllowLocalhostClient");
 
+            app.UseAuthentication(); // Author: ALL
             app.UseAuthorization();
 
 

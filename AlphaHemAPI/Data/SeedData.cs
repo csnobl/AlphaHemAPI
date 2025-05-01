@@ -1,4 +1,6 @@
-﻿using AlphaHemAPI.Data.Models;
+﻿using AlphaHemAPI.Constants;
+using AlphaHemAPI.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 
@@ -9,6 +11,28 @@ namespace AlphaHemAPI.Data
     {
         public static async Task Initialize(AlphaHemAPIDbContext ctx)
         {
+            if (!ctx.Roles.Any())
+            {
+                //Co-Author : All
+                var roles = new List<IdentityRole>
+                {
+                    new IdentityRole 
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = ApiRoles.RealtorAdmin,
+                        NormalizedName = ApiRoles.RealtorAdmin 
+                    },
+                    new IdentityRole 
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = ApiRoles.RealtorUser, 
+                        NormalizedName = ApiRoles.RealtorUser
+                    }
+                };
+                ctx.Roles.AddRange(roles);
+                await ctx.SaveChangesAsync();
+            }
+
 
             if (!ctx.Agencies.Any())
             {
@@ -53,8 +77,11 @@ namespace AlphaHemAPI.Data
                 ctx.SaveChanges();
             }
 
+
+            //Co-Author : All
             if (!ctx.Realtors.Any())
             {
+                var hasher = new PasswordHasher<Realtor>();
                 var agencies = await ctx.Agencies.ToListAsync();
                 var realtors = new List<Realtor>
                 {
@@ -62,56 +89,112 @@ namespace AlphaHemAPI.Data
                     {
                         FirstName = "Anna",
                         LastName = "Svensson",
+                        UserName = "anna.svensson@sunsetrealty.se",
+                        NormalizedUserName = "ANNA.SVENSSON@SUNSETREALTY.SE",
                         Email = "anna.svensson@sunsetrealty.se",
+                        NormalizedEmail = "ANNA.SVENSSON@SUNSETREALTY.SE",
                         PhoneNumber = "+46 70 123 45 67",
                         ProfilePicture = "https://i.imgur.com/hXvWF5S.png",
-                        Password = "Test1234",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
                         Agency = agencies.FirstOrDefault(a => a.Name == "Sunset Realty")
                     },
                     new Realtor
                     {
                         FirstName = "Erik",
                         LastName = "Lindberg",
+                        UserName = "erik.lindberg@urbannest.se",
+                        NormalizedUserName = "ERIK.LINDBERG@URBANNEST.SE",
                         Email = "erik.lindberg@urbannest.se",
+                        NormalizedEmail = "ERIK.LINDBERG@URBANNEST.SE",
                         PhoneNumber = "+46 70 234 56 78",
                         ProfilePicture = "https://i.imgur.com/zFOGna5.jpeg",
-                        Password = "Test1234",
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        EmailConfirmed = true,
                         Agency = agencies.FirstOrDefault(a => a.Name == "Urban Nest")
                     },
                     new Realtor
                     {
                         FirstName = "Sara",
                         LastName = "Nyström",
+                        UserName = "sara.nystrom@mountainview.se",
+                        NormalizedUserName = "SARA.NYSTROM@MOUNTAINVIEW.SE",
                         Email = "sara.nystrom@mountainview.se",
+                        NormalizedEmail = "SARA.NYSTROM@MOUNTAINVIEW.SE",
                         PhoneNumber = "+46 70 345 67 89",
                         ProfilePicture = "https://i.imgur.com/lmmEbEs.png",
-                        Password = "Test1234",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
                         Agency = agencies.FirstOrDefault(a => a.Name == "Mountain View Estates")
                     },
                     new Realtor
                     {
                         FirstName = "Jonas",
                         LastName = "Ekström",
+                        UserName = "jonas.ekstrom@eliteproperty.se",
+                        NormalizedUserName = "JONAS.EKSTROM@ELITEPROPERTY.SE",
                         Email = "jonas.ekstrom@eliteproperty.se",
+                        NormalizedEmail = "JONAS.EKSTROM@ELITEPROPERTY.SE",
                         PhoneNumber = "+46 70 456 78 90",
                         ProfilePicture = "https://i.imgur.com/cQ3xVSL.png",
-                        Password = "Test1234",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
                         Agency = agencies.FirstOrDefault(a => a.Name == "Elite Property Group")
                     },
                     new Realtor
                     {
                         FirstName = "Elin",
                         LastName = "Karlsson",
+                        UserName = "elin.karlsson@greenleaf.se",
+                        NormalizedUserName = "ELIN.KARLSSON@GREENLEAF.SE",
                         Email = "elin.karlsson@greenleaf.se",
+                        NormalizedEmail = "ELIN.KARLSSON@GREENLEAF.SE",
                         PhoneNumber = "+46 70 567 89 01",
                         ProfilePicture = "",
-                        Password = "Test1234",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
                         Agency = agencies.FirstOrDefault(a => a.Name == "GreenLeaf Homes")
                     }
                 };
                 ctx.Realtors.AddRange(realtors);
                 ctx.SaveChanges();
             }
+
+            //Co-Author : All
+            if (!ctx.UserRoles.Any())
+            {
+                var userRoles = new List<IdentityUserRole<string>>()
+                {
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = ctx.Roles.FirstOrDefault(r => r.Name == ApiRoles.RealtorAdmin).Id,
+                        UserId = ctx.Realtors.FirstOrDefault(r => r.Email == "anna.svensson@sunsetrealty.se").Id
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = ctx.Roles.FirstOrDefault(r => r.Name == ApiRoles.RealtorAdmin).Id,
+                        UserId = ctx.Realtors.FirstOrDefault(r => r.Email == "erik.lindberg@urbannest.se").Id
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = ctx.Roles.FirstOrDefault(r => r.Name == ApiRoles.RealtorAdmin).Id,
+                        UserId = ctx.Realtors.FirstOrDefault(r => r.Email == "sara.nystrom@mountainview.se").Id
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = ctx.Roles.FirstOrDefault(r => r.Name == ApiRoles.RealtorAdmin).Id,
+                        UserId = ctx.Realtors.FirstOrDefault(r => r.Email == "jonas.ekstrom@eliteproperty.se").Id
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = ctx.Roles.FirstOrDefault(r => r.Name == ApiRoles.RealtorAdmin).Id,
+                        UserId = ctx.Realtors.FirstOrDefault(r => r.Email == "elin.karlsson@greenleaf.se").Id
+                    },
+                };
+                ctx.UserRoles.AddRange(userRoles);
+                ctx.SaveChanges();
+            }
+
 
             if (!ctx.Municipalities.Any())
             {

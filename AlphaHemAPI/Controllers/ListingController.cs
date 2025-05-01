@@ -1,5 +1,6 @@
 ﻿using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,6 +54,7 @@ namespace AlphaHemAPI.Controllers
 
         // Author: Conny
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateListing([FromBody] ListingCreateDto listingCreateDto)
         {
             if (listingCreateDto.Images == null || listingCreateDto.Images.Count == 0 || listingCreateDto.Images.Count > 40)
@@ -71,6 +73,7 @@ namespace AlphaHemAPI.Controllers
 
         // Author: Conny
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
         {
             if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
@@ -89,6 +92,7 @@ namespace AlphaHemAPI.Controllers
 
         // Author: Niklas
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteListing(int id)
         {
             var result = await listingService.DeleteListingAsync(id);
@@ -99,7 +103,7 @@ namespace AlphaHemAPI.Controllers
 
         // Author: Conny
         [HttpGet("realtor/{id}")]
-        public async Task<IActionResult> GetListingsByRealtor(int id)
+        public async Task<IActionResult> GetListingsByRealtor(string id)
         {
             var listingsDto = await listingService.GetListingsByRealtorAsync(id);
             return Ok(listingsDto);

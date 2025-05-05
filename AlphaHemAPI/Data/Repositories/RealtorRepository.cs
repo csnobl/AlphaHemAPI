@@ -34,5 +34,10 @@ namespace AlphaHemAPI.Data.Repositories
                 .Include(r => r.Agency)
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
+
+        public async Task<Realtor?> GetAsync(string id)
+        {
+            return await _ctx.Realtors.FirstOrDefaultAsync(r => r.Id == id);
+        }
     }
 }

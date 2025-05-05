@@ -37,6 +37,6 @@ namespace AlphaHemAPI.Data.DTO
         [Required]
         public int MunicipalityId { get; set; }
         [Required]
-        public int RealtorId { get; set; }
+        public string RealtorId { get; set; }
     }
 }

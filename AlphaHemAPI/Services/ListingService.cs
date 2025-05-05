@@ -12,9 +12,9 @@ namespace AlphaHemAPI.Services
         private readonly IListingRepository listingRepository;
         private readonly IMapper mapper;
         private readonly IRepository<Municipality> municipalityRepository;
-        private readonly IRepository<Realtor> realtorRepository;
+        private readonly IRealtorRepository realtorRepository;
 
-        public ListingService(IListingRepository listingRepository, IMapper mapper, IRepository<Municipality> municipalityRepository, IRepository<Realtor> realtorRepository)
+        public ListingService(IListingRepository listingRepository, IMapper mapper, IRepository<Municipality> municipalityRepository, IRealtorRepository realtorRepository)
         {
             this.listingRepository = listingRepository;
             this.mapper = mapper;

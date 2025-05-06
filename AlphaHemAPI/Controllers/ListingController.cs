@@ -72,7 +72,7 @@ namespace AlphaHemAPI.Controllers
         }
 
         // Author: Conny
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
         {

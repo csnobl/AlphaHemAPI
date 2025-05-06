@@ -1,4 +1,5 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using AlphaHemAPI.Constants;
+using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -76,6 +77,10 @@ namespace AlphaHemAPI.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
         {
+            var userId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
+            if (!string.Equals(userId, listingUpdateDto.RealtorId))
+                return Unauthorized("You are not authorized to update this listing.");
+
             if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
                 return BadRequest("Listings require between 1 and 40 images.");
 

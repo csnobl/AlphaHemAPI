@@ -96,10 +96,18 @@ namespace AlphaHemAPI.Controllers
         }
 
         // Author: Niklas
+        // Co-author: ALL
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteListing(int id)
         {
+            var listingToFetchRealtor = await listingService.GetListingDetailsAsync(id);
+
+            var realtorId = listingToFetchRealtor.Realtor.Id;
+            var userId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
+            if (!string.Equals(userId, realtorId))
+                return Unauthorized("You are not authorized to delete this listing.");
+
             var result = await listingService.DeleteListingAsync(id);
             if (!result)
                 return NotFound();

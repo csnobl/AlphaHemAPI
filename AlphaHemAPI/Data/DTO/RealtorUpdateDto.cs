@@ -11,9 +11,6 @@ namespace AlphaHemAPI.Data.DTO
         [Required]
         public string LastName { get; set; }
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-        [Required]
         [Phone]
         public string PhoneNumber { get; set; }
         public string? ProfilePicture { get; set; }

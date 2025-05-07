@@ -1,5 +1,7 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using AlphaHemAPI.Constants;
+using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +32,7 @@ namespace AlphaHemAPI.Controllers
         //Author: Christoffer
         // Co-author: Conny
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRealtor(int id, [FromBody] RealtorUpdateDto realtorUpdateDto)
+        public async Task<IActionResult> UpdateRealtor(string id, [FromBody] RealtorUpdateDto realtorUpdateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -59,6 +61,20 @@ namespace AlphaHemAPI.Controllers
             if (realtor == null)
                 return NotFound("Realtor not found.");
             return Ok(realtor);
+        }
+
+        //Author : ALL
+        [HttpPut("ApproveRealtor/{id}")]
+        [Authorize(Roles = ApiRoles.RealtorAdmin)]
+        public async Task<IActionResult> ApproveEmailForRealtor(string id)
+        {
+            var adminRealtor = User.FindFirst(CustomClaimTypes.Uid)?.Value;
+
+            var result = await realtorService.ApproveEmailForRealtor(id,adminRealtor);
+            if (!result)
+                return NotFound("Realtor not found or already approved.");
+
+            return NoContent();
         }
     }
 }

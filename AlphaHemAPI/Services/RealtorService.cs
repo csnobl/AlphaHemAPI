@@ -40,7 +40,7 @@ namespace AlphaHemAPI.Services
         }
 
         //Author: Christoffer
-        public async Task<bool> UpdateRealtorAsync(int id, RealtorUpdateDto realtorUpdateDto)
+        public async Task<bool> UpdateRealtorAsync(string id, RealtorUpdateDto realtorUpdateDto)
         {
             var realtor = await realtorRepository.GetAsync(id);
             if (realtor == null)
@@ -73,6 +73,32 @@ namespace AlphaHemAPI.Services
             if (realtor == null)
                 return null;
             return mapper.Map<RealtorDto>(realtor);
+        }
+
+        //Author : ALL
+        public async Task<bool> ApproveEmailForRealtor(string userId, string adminRealtorId)
+        {
+            var adminRealtor = await realtorRepository.GetAsync(adminRealtorId);
+            if (adminRealtor == null)
+                return false;
+
+            var realtor = await realtorRepository.GetAsync(userId);
+            if (realtor == null || realtor.EmailConfirmed)
+                return false;
+
+            if (realtor.AgencyId != adminRealtor.AgencyId)
+                return false;
+
+            realtor.EmailConfirmed = true;
+            try
+            {
+                await realtorRepository.UpdateAsync(realtor);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

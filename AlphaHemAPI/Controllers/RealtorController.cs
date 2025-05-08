@@ -1,4 +1,5 @@
-﻿using AlphaHemAPI.Constants;
+﻿using System.Net;
+using AlphaHemAPI.Constants;
 using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ namespace AlphaHemAPI.Controllers
 
         // Author : Niklas
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]RealtorRegisterDto registerDto)
+        public async Task<IActionResult> Register([FromBody] RealtorRegisterDto registerDto)
         {
             var result = await realtorService.RegisterRealtorAsync(registerDto);
             if (!result)
@@ -68,12 +69,32 @@ namespace AlphaHemAPI.Controllers
         [Authorize(Roles = ApiRoles.RealtorAdmin)]
         public async Task<IActionResult> ApproveEmailForRealtor(string id)
         {
-            var adminRealtor = User.FindFirst(CustomClaimTypes.Uid)?.Value;
+            var adminId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
 
-            var result = await realtorService.ApproveEmailForRealtor(id,adminRealtor);
+            var result = await realtorService.ApproveEmailForRealtorAsync(id, adminId);
             if (!result)
                 return NotFound("Realtor not found or already approved.");
 
+            return NoContent();
+        }
+
+        // Author: Conny
+        [HttpDelete("{id}")]
+        [Authorize(Roles = ApiRoles.RealtorAdmin)]
+        public async Task<IActionResult> DeleteRealtor(string id)
+        {
+            var adminId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
+            var response = await realtorService.DeleteRealtorAsync(id, adminId);
+            if (!response.Success)
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.NotFound:
+                        return NotFound(response);
+                    case HttpStatusCode.BadRequest:
+                        return BadRequest(response);
+                    case HttpStatusCode.InternalServerError:
+                        return StatusCode(500, response);
+                }
             return NoContent();
         }
     }

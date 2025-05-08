@@ -1,4 +1,5 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using System.Net;
+using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Data.Models;
 using AlphaHemAPI.Data.Repositories;
 using AutoMapper;
@@ -76,9 +77,9 @@ namespace AlphaHemAPI.Services
         }
 
         //Author : ALL
-        public async Task<bool> ApproveEmailForRealtor(string userId, string adminRealtorId)
+        public async Task<bool> ApproveEmailForRealtorAsync(string userId, string adminId)
         {
-            var adminRealtor = await realtorRepository.GetAsync(adminRealtorId);
+            var adminRealtor = await realtorRepository.GetAsync(adminId);
             if (adminRealtor == null)
                 return false;
 
@@ -99,6 +100,60 @@ namespace AlphaHemAPI.Services
             {
                 return false;
             }
+        }
+
+        // Author: Conny
+        public async Task<Response> DeleteRealtorAsync(string userId, string adminId)
+        {
+            var adminRealtor = await realtorRepository.GetAsync(adminId);
+            var realtor = await realtorRepository.GetAsync(userId);
+
+            if (realtor == null)
+            {
+                return new Response
+                {
+                    Message = "Ett fel har uppstått vid hämtning av mäklare.",
+                    Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {userId}." },
+                    StatusCode = HttpStatusCode.NotFound
+                };
+            }
+            if (adminRealtor == null)
+            {
+                return new Response
+                {
+                    Message = "Ett fel har uppstått vid hämtning av mäklaradministratör.",
+                    Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {adminId}." },
+                    StatusCode = HttpStatusCode.NotFound
+                };
+            }
+            if (realtor.AgencyId != adminRealtor.AgencyId)
+            {
+                return new Response
+                {
+                    Message = "Ett fel har uppstått vid borttagning av mäklare",
+                    Errors = new List<string> { $"De angivna mäklarna tillhör inte samma mäklarbyrå (adminRealtor.AgencyId = {adminRealtor.AgencyId}, realtor.AgencyId = {realtor.AgencyId})." },
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+            }
+            try
+            {
+                await realtorRepository.DeleteAsync(realtor);
+                return new Response
+                {
+                    Success = true,
+                    StatusCode = HttpStatusCode.NoContent
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    Message = "Ett oväntat fel uppstod vid borttagning av mäklare.",
+                    Errors = new List<string> { $"Error: {ex.Message}." },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
+            
         }
     }
 }

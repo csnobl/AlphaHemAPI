@@ -40,8 +40,6 @@ namespace AlphaHemAPI.Data.Repositories
                 {
                     "price" => query.OrderBy(l => l.Price),
                     "price_desc" => query.OrderByDescending(l => l.Price),
-                    "category" => query.OrderBy(l => l.Category),
-                    "category_desc" => query.OrderByDescending(l => l.Category),
                     _ => query.OrderByDescending(l => l.Id)
                 };
 

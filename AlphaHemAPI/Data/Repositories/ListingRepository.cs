@@ -19,8 +19,8 @@ namespace AlphaHemAPI.Data.Repositories
             int pageIndex,
             int pageSize,
             string? municipality = null,
+            string? category = null,
             string? sortBy = null)
-
         {
              var query = _ctx.Listings
                 .Include(l => l.Municipality)
@@ -28,10 +28,15 @@ namespace AlphaHemAPI.Data.Repositories
 
             if (!string.IsNullOrEmpty(municipality))
             { 
-                query = query.Where(l => EF.Functions.Like(l.Municipality.Name, municipality));
+                query = query.Where(l => l.Municipality.Name == municipality);
             }
 
-                query = (sortBy?.ToLower()) switch
+            if (!string.IsNullOrEmpty(category) && Enum.TryParse<Category>(category, out var categoryEnum))
+            {
+                query = query.Where(l => l.Category == categoryEnum);
+            }
+
+            query = (sortBy?.ToLower()) switch
                 {
                     "price" => query.OrderBy(l => l.Price),
                     "price_desc" => query.OrderByDescending(l => l.Price),

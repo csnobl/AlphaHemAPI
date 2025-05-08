@@ -26,11 +26,18 @@ namespace AlphaHemAPI.Controllers
             [FromQuery] int pageIndex,
             [FromQuery] int pageSize,
             [FromQuery] string? municipality = null,
+            [FromQuery] string? category = null,
             [FromQuery] string? sortBy = null)
         {
             try
             {
-                var listings = await listingService.GetPagedListingsAsync(pageIndex, pageSize, municipality, sortBy);
+                var listings = await listingService.GetPagedListingsAsync(
+                    pageIndex,
+                    pageSize,
+                    municipality,
+                    category,
+                    sortBy);
+
                 return Ok(listings);
             }
             catch (Exception ex)

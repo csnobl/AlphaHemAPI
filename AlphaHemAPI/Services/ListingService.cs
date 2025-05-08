@@ -24,11 +24,21 @@ namespace AlphaHemAPI.Services
 
         // Author : Smilla
         // Co-author: Christoffer
-        public async Task<PagedListingListDto> GetPagedListingsAsync(int pageIndex, int pageSize, string? municipality = null, string? sortBy = null)
+        public async Task<PagedListingListDto> GetPagedListingsAsync(
+            int pageIndex,
+            int pageSize,
+            string? municipality = null,
+            string? category = null,
+            string? sortBy = null)
         {
             try
             {
-                var (listings, totalCount) = await listingRepository.GetPagedListingsWithIncludesAsync(pageIndex, pageSize, municipality, sortBy);
+                var (listings, totalCount) = await listingRepository.GetPagedListingsWithIncludesAsync(
+                    pageIndex,
+                    pageSize,
+                    municipality,
+                    category,
+                    sortBy);
 
                 var listingDtos = mapper.Map<List<ListingListDto>>(listings);
 

@@ -10,6 +10,7 @@ namespace AlphaHemAPI.Data.Repositories
             int pageIndex,
             int pageSize,
             string? municipality = null,
+            string? category = null,
             string? sortBy = null);
         Task<Listing?> GetByIdWithIncludesAsync(int id);
         Task<List<Listing>> GetListingsByRealtorAsync(string id);

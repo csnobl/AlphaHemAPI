@@ -21,12 +21,19 @@ namespace AlphaHemAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAgency(int id)
         {
-            var agency = await agencyService.GetAgencyById(id);
-            if (agency == null)
+            try
             {
-                return NotFound();
+                var agency = await agencyService.GetAgencyById(id);
+                if (agency == null)
+                {
+                    return NotFound();
+                }
+                return Ok(agency);
             }
-            return Ok(agency);
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
 
         //Author: Mattias
@@ -34,11 +41,9 @@ namespace AlphaHemAPI.Controllers
         public async Task<ActionResult<IEnumerable<AgencyWithRealtorsDto>>> GetAllAgencies()
         {
             var agencies = await agencyService.GetAllAgencies();
-            if (agencies == null)
-            {
-                return NotFound();
-            }
+            
             return Ok(agencies);
+            
         }
     }
 }

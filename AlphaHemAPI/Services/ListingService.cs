@@ -46,8 +46,7 @@ namespace AlphaHemAPI.Services
                 var pagedListingListDto = mapper.Map<PagedListingListDto>(listingDtos);
 
                 pagedListingListDto.TotalCount = totalCount;
-                pagedListingListDto.PageSize = pageSize;
-                pagedListingListDto.CurrentPage = pageIndex;
+
                 // Author: ALL
                 return new Response<PagedListingListDto>
                 {

@@ -1,4 +1,5 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using System.Net;
+using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Data.Models;
 using AlphaHemAPI.Data.Repositories;
 using AutoMapper;
@@ -24,7 +25,7 @@ namespace AlphaHemAPI.Services
 
         // Author : Smilla
         // Co-author: Christoffer
-        public async Task<PagedListingListDto> GetPagedListingsAsync(
+        public async Task<Response<PagedListingListDto>> GetPagedListingsAsync(
             int pageIndex,
             int pageSize,
             string? municipality = null,
@@ -47,110 +48,223 @@ namespace AlphaHemAPI.Services
                 pagedListingListDto.TotalCount = totalCount;
                 pagedListingListDto.PageSize = pageSize;
                 pagedListingListDto.CurrentPage = pageIndex;
-
-                return pagedListingListDto;
+                // Author: ALL
+                return new Response<PagedListingListDto>
+                {
+                    Success = true,
+                    Data = pagedListingListDto,
+                    StatusCode = HttpStatusCode.OK
+                };
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while fetching listings.", ex);
+                return new Response<PagedListingListDto>
+                {
+                    Data = null,
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
             }
-
         }
-
-        public async Task<ListingDetailsDto> GetListingDetailsAsync(int id)
+        // Author: Smilla
+        // Co-author: ALL
+        public async Task<Response<ListingDetailsDto>> GetListingDetailsAsync(int id)
         {
-            var listing = await listingRepository.GetByIdWithIncludesAsync(id);
-            if (listing == null)
+            try
             {
-                return null;
+                var listing = await listingRepository.GetByIdWithIncludesAsync(id);
+                if (listing == null)
+                {
+                    return new Response<ListingDetailsDto>
+                    {
+                        Data = null,
+                        Message = "Ett fel har inträffat vid hämtning av bostad.",
+                        Errors = new List<string> { $"Felmeddelande: Ingen bostad med ID: {id} kunde hittas." },
+                        StatusCode = HttpStatusCode.NotFound
+                    };
+                }
+                var listingDto = mapper.Map<ListingDetailsDto>(listing);
+
+                return new Response<ListingDetailsDto>
+                {
+                    Success = true,
+                    Data = listingDto,
+                    StatusCode = HttpStatusCode.OK
+                };
             }
-            return mapper.Map<ListingDetailsDto>(listing);
+            catch (Exception ex)
+            {
+                return new Response<ListingDetailsDto>
+                {
+                    Data = null,
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
         }
 
         // Author: Conny
-        public async Task<bool> AddListingAsync(ListingCreateDto listingCreateDto)
+        // Co-author: ALL
+        public async Task<Response> AddListingAsync(ListingCreateDto listingCreateDto)
         {
-            // Map DTO -> Model
-            var listing = mapper.Map<Listing>(listingCreateDto);
-
-            // Fetch related entities using DTO IDs to set navigation properties
-            var realtor = await realtorRepository.GetAsync(listingCreateDto.RealtorId);
-            var municipality = await municipalityRepository.GetAsync(listingCreateDto.MunicipalityId);
-
-            if (realtor == null || municipality == null)
-                return false;
-
-            listing.Realtor = realtor;
-            listing.Municipality = municipality;
-
             try
             {
+                // Map DTO -> Model
+                var listing = mapper.Map<Listing>(listingCreateDto);
+
+                // Fetch related entities using DTO IDs to set navigation properties
+                var realtor = await realtorRepository.GetAsync(listingCreateDto.RealtorId);
+                var municipality = await municipalityRepository.GetAsync(listingCreateDto.MunicipalityId);
+
+                if (realtor == null)
+                    return new Response
+                    {
+                        Message = "Ett fel har inträffat vid skapandet av bostad.",
+                        Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {listingCreateDto.RealtorId}." },
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
+
+                if (municipality == null)
+                    return new Response
+                    {
+                        Message = "Ett fel har inträffat vid skapandet av bostad.",
+                        Errors = new List<string> { $"Ingen kommun kunde hittas med ID: {listingCreateDto.MunicipalityId}." },
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
+
+                listing.Realtor = realtor;
+                listing.Municipality = municipality;
+
                 await listingRepository.AddAsync(listing);
+
+                return new Response
+                {
+                    Success = true,
+                    StatusCode = HttpStatusCode.Created
+                };
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new Response
+                {
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
             }
-            return true;
+
         }
 
         // Author: Conny
-        public async Task<bool> UpdateListingAsync(int id, ListingUpdateDto listingUpdateDto)
+        public async Task<Response> UpdateListingAsync(int id, ListingUpdateDto listingUpdateDto)
         {
-            // Fetch listing to be updated
-            var listing = await listingRepository.GetAsync(id);
-            if (listing == null)
-                return false;
-
-            // Map DTO -> Entity
-            mapper.Map(listingUpdateDto, listing);
-
-            // Fetch related entities using DTO ID to set navigation property (in case of realtor change)
-            var realtor = await realtorRepository.GetAsync(listingUpdateDto.RealtorId);
-
-            if (realtor == null)
-                return false;
-
-            listing.Realtor = realtor;
-
             try
             {
+                // Fetch listing to be updated
+                var listing = await listingRepository.GetAsync(id);
+                if (listing == null)
+                    return new Response
+                    {
+                        Message = "Ett fel inträffade vid uppdatering av bostad.",
+                        Errors = new List<string> { $"Ingen bostad kunde hittas med ID: {id}." },
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
+
+                // Fetch related entities using DTO ID to set navigation property (in case of realtor change)
+                var realtor = await realtorRepository.GetAsync(listingUpdateDto.RealtorId);
+                if (realtor == null)
+                {
+                    return new Response
+                    {
+                        Message = "Ett fel inträffade vid uppdatering av bostad.",
+                        Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {listingUpdateDto.RealtorId}." },
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
+                }
+
+                // Map DTO -> Entity
+                mapper.Map(listingUpdateDto, listing);
+                listing.Realtor = realtor;
+
                 await listingRepository.UpdateAsync(listing);
+
+                return new Response
+                {
+                    Success = true,
+                    StatusCode = HttpStatusCode.Accepted
+                };
+
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new Response
+                {
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
             }
-            return true;
         }
 
         // Author: Niklas
-        public async Task<bool> DeleteListingAsync(int id)
+        // Co-author: ALL
+        public async Task<Response> DeleteListingAsync(int id)
         {
-
-            var listing = await listingRepository.GetAsync(id);
-            if (listing == null)
-                return false;
-
             try
             {
+                var listing = await listingRepository.GetAsync(id);
+                if (listing == null)
+                    return new Response
+                    {
+                        Message = "Ett fel har inträffat vid borttagning av bostad.",
+                        Errors = new List<string> { $"Ingen bostad kunde hittas med ID: {id}." },
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
+
                 await listingRepository.DeleteAsync(listing);
+                return new Response
+                {
+                    Success = true,
+                    StatusCode = HttpStatusCode.NoContent
+                };
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new Response
+                {
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
             }
-            return true;
         }
 
         // Author: Conny
-        public async Task<List<ListingListDto>> GetListingsByRealtorAsync(string realtorId)
+        public async Task<Response<List<ListingListDto>>> GetListingsByRealtorAsync(string realtorId)
         {
-            var listings = await listingRepository.GetListingsByRealtorAsync(realtorId);
+            try
+            {
+                var listings = await listingRepository.GetListingsByRealtorAsync(realtorId);
+                var listingDtos = mapper.Map<List<ListingListDto>>(listings);
 
-            var listingDtos = mapper.Map<List<ListingListDto>>(listings);
-
-            return listingDtos;
+                return new Response<List<ListingListDto>>
+                {
+                    Success = true,
+                    Data = listingDtos,
+                    StatusCode = HttpStatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response<List<ListingListDto>>
+                {
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
         }
     }
 }

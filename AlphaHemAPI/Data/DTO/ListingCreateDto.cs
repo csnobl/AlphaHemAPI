@@ -31,6 +31,7 @@ namespace AlphaHemAPI.Data.DTO
 
         // Enum
         [Required]
+        [EnumDataType(typeof(Category))]
         public Category Category { get; set; }
 
         // Relations. Entities are fetched from these IDs to minimize data transfer

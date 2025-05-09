@@ -1,4 +1,5 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using System.Net;
+using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Data.Models;
 using AlphaHemAPI.Data.Repositories;
 using AutoMapper;
@@ -17,24 +18,69 @@ namespace AlphaHemAPI.Services
         }
 
         //Author: Mattias
-        public async Task<AgencyWithRealtorsDto> GetAgencyById(int id)
+        // Co-author: ALL
+        public async Task<Response<AgencyWithRealtorsDto>> GetAgencyById(int id)
         {
-            var agency = await agencyRepository.GetAsyncIncludeRealtor(id);
-            if (agency == null)
+            try
             {
-                return null;
+                var agency = await agencyRepository.GetAsyncIncludeRealtor(id);
+                if (agency == null)
+                {
+                    return new Response<AgencyWithRealtorsDto>
+                    {
+                        Message = $"Kunde inte hitta en mäklarbyrå med ID: {id}",
+                        StatusCode = HttpStatusCode.NotFound,
+                        Data = null
+                    };
+                }
+                var agencyDto = mapper.Map<AgencyWithRealtorsDto>(agency);
+                return new Response<AgencyWithRealtorsDto>
+                {
+                    Success = true,
+                    StatusCode = HttpStatusCode.OK,
+                    Data = agencyDto
+                };
             }
-            return mapper.Map<AgencyWithRealtorsDto>(agency);
+            catch (Exception ex)
+            {
+                return new Response<AgencyWithRealtorsDto>
+                {
+                    Data = null,
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
         }
+        
         //Author: Mattias
-        public async Task<IEnumerable<AgencyWithRealtorsDto>> GetAllAgencies()
+        // Co-author: ALL
+        public async Task<Response<List<AgencyWithRealtorsDto>>> GetAllAgencies()
         {
-            var agencies = await agencyRepository.GetAllAsyncIncludeRealtor();
-            if (agencies == null)
+            try
             {
-                return null;
+                var agencies = await agencyRepository.GetAllAsyncIncludeRealtor();
+                var agencyList = mapper.Map<List<AgencyWithRealtorsDto>>(agencies);
+
+                return new Response<List<AgencyWithRealtorsDto>>
+                {
+                    Success = true,
+                    StatusCode = HttpStatusCode.OK,
+                    Data = agencyList
+                };
             }
-            return mapper.Map<IEnumerable<AgencyWithRealtorsDto>>(agencies);
+            catch (Exception ex)
+            {
+                return new Response<List<AgencyWithRealtorsDto>>
+                {
+                    Data = null,
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
+
+            
         }
 
     }

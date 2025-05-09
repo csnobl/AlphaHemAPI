@@ -1,4 +1,5 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using System.Net;
+using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,32 +19,33 @@ namespace AlphaHemAPI.Controllers
         }
 
         //Author: Mattias
+        // Co-author: ALL
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAgency(int id)
         {
-            try
+            var response = await agencyService.GetAgencyById(id);
+
+            switch (response.StatusCode)
             {
-                var agency = await agencyService.GetAgencyById(id);
-                if (agency == null)
-                {
-                    return NotFound();
-                }
-                return Ok(agency);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
+                case HttpStatusCode.NotFound:
+                    return NotFound(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(StatusCodes.Status500InternalServerError, response);
+                default:
+                    return Ok(response.Data);
             }
         }
 
         //Author: Mattias
+        // Co-author: ALL
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AgencyWithRealtorsDto>>> GetAllAgencies()
+        public async Task<ActionResult<List<AgencyWithRealtorsDto>>> GetAllAgencies()
         {
-            var agencies = await agencyService.GetAllAgencies();
+            var response = await agencyService.GetAllAgencies();
             
-            return Ok(agencies);
-            
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+            return Ok(response.Data);
         }
     }
 }

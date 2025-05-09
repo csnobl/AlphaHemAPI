@@ -1,9 +1,13 @@
-﻿using AlphaHemAPI.Constants;
+﻿using System.Net;
+using AlphaHemAPI.Constants;
 using AlphaHemAPI.Data.DTO;
+using AlphaHemAPI.Data.Models;
 using AlphaHemAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace AlphaHemAPI.Controllers
 {
@@ -29,77 +33,90 @@ namespace AlphaHemAPI.Controllers
             [FromQuery] string? category = null,
             [FromQuery] string? sortBy = null)
         {
-            try
-            {
-                var listings = await listingService.GetPagedListingsAsync(
-                    pageIndex,
-                    pageSize,
-                    municipality,
-                    category,
-                    sortBy);
+            var response = await listingService.GetPagedListingsAsync(
+                pageIndex,
+                pageSize,
+                municipality,
+                category,
+                sortBy);
 
-                return Ok(listings);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
+            // Author: ALL
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+
+            return Ok(response.Data);
         }
 
         // Author : Smilla
         [HttpGet("{id}")]
         public async Task<IActionResult> GetListingDetails(int id)
         {
-            var listingDetails = await listingService.GetListingDetailsAsync(id);
+            var response = await listingService.GetListingDetailsAsync(id);
 
-            if (listingDetails == null)
+            switch (response.StatusCode)
             {
-                return NotFound();
+                case HttpStatusCode.NotFound:
+                    return NotFound(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(StatusCodes.Status500InternalServerError, response);
+                default:
+                    return Ok(response.Data);
             }
-
-            return Ok(listingDetails);
         }
 
         // Author: Conny
+        // Co-author: ALL
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateListing([FromBody] ListingCreateDto listingCreateDto)
         {
             if (listingCreateDto.Images == null || listingCreateDto.Images.Count == 0 || listingCreateDto.Images.Count > 40)
-                return BadRequest("Listings require between 1 and 40 images.");
+                return BadRequest("Bostäder måste inkludera minst en bild och högst fyrtio bilder.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await listingService.AddListingAsync(listingCreateDto);
+            var response = await listingService.AddListingAsync(listingCreateDto);
 
-            if (!result)
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating listing.");
-
-            return StatusCode(StatusCodes.Status201Created);
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    return BadRequest(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(StatusCodes.Status500InternalServerError, response);
+                default:
+                    return StatusCode(StatusCodes.Status201Created, response);
+            }
         }
 
         // Author: Conny
+        // Co-author: ALL
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateListing(int id, [FromBody] ListingUpdateDto listingUpdateDto)
         {
             var userId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
             if (!string.Equals(userId, listingUpdateDto.RealtorId))
-                return Unauthorized("You are not authorized to update this listing.");
+                return StatusCode(StatusCodes.Status403Forbidden, "Du har inte behörighet att redigera denna bostad.");
 
             if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
-                return BadRequest("Listings require between 1 and 40 images.");
+                return BadRequest("Bostäder måste inkludera minst en bild och högst fyrtio bilder.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await listingService.UpdateListingAsync(id, listingUpdateDto);
+            var response = await listingService.UpdateListingAsync(id, listingUpdateDto);
 
-            if (!result)
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating listing.");
-
-            return StatusCode(StatusCodes.Status201Created);
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    return BadRequest(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(StatusCodes.Status500InternalServerError, response);
+                default:
+                    return Ok(response);
+            }
+            ;
         }
 
         // Author: Niklas
@@ -108,25 +125,40 @@ namespace AlphaHemAPI.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteListing(int id)
         {
-            var listingToFetchRealtor = await listingService.GetListingDetailsAsync(id);
+            var realtorResponse = await listingService.GetListingDetailsAsync(id);
+            if (realtorResponse.Data == null)
+                return NotFound(realtorResponse);
+            var realtorId = realtorResponse.Data.Realtor.Id;
 
-            var realtorId = listingToFetchRealtor.Realtor.Id;
             var userId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
-            if (!string.Equals(userId, realtorId))
-                return Unauthorized("You are not authorized to delete this listing.");
 
-            var result = await listingService.DeleteListingAsync(id);
-            if (!result)
-                return NotFound();
-            return NoContent();
+            if (!string.Equals(userId, realtorId))
+                return StatusCode(StatusCodes.Status403Forbidden, "Du har inte behörighet att ta bort denna bostad.");
+
+            var response = await listingService.DeleteListingAsync(id);
+
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    return BadRequest(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(StatusCodes.Status500InternalServerError, response);
+                default:
+                    return NoContent();
+            }
         }
 
         // Author: Conny
+        // Co-author: ALL
         [HttpGet("realtor/{id}")]
         public async Task<IActionResult> GetListingsByRealtor(string id)
         {
-            var listingsDto = await listingService.GetListingsByRealtorAsync(id);
-            return Ok(listingsDto);
+            var response = await listingService.GetListingsByRealtorAsync(id);
+
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+
+            return Ok(response.Data);
         }
     }
 }

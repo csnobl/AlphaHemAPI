@@ -2,6 +2,7 @@
 using AlphaHemAPI.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 using System.Reflection.Emit;
 
 namespace AlphaHemAPI.Data
@@ -71,6 +72,18 @@ namespace AlphaHemAPI.Data
                         Name = "GreenLeaf Homes",
                         Presentation = "Hållbara hem för en bättre framtid. Vi fokuserar på miljövänliga bostäder och gröna byggprojekt. Vårt mål är att kombinera modern design med hållbar utveckling – för både människor och planeten.",
                         Logo = "https://i.imgur.com/UhyQail.png"
+                    },
+                    new Agency
+                    {
+                        Name = "BlueKey Estates",
+                        Presentation = "Bluekey Estates – Din nyckel till framtidens boende. Vi erbjuder smarta bostadslösningar med fokus på kvalitet, trygghet och hållbarhet. Med personlig service och lokal expertis hjälper vi dig att hitta ett hem där både du och miljön trivs.",
+                        Logo = "https://i.imgur.com/h3OLkem.png"
+                    },
+                    new Agency
+                    {
+                        Name = "Anchor & Oak Properties",
+                        Presentation = "Anchor & Oak – Där trygghet möter stil. Vi förmedlar hem med hjärta, där klassisk kvalitet förenas med modern livsstil. Med djupa rötter i lokalsamhället och ett öga för detaljer guidar vi dig tryggt genom varje bostadsresa.",
+                        Logo = "https://i.imgur.com/pA0tULD.png"
                     }
                 };
                 ctx.Agencies.AddRange(agencies);
@@ -150,11 +163,310 @@ namespace AlphaHemAPI.Data
                         Email = "elin.karlsson@greenleaf.se",
                         NormalizedEmail = "ELIN.KARLSSON@GREENLEAF.SE",
                         PhoneNumber = "+46 70 567 89 01",
-                        ProfilePicture = "",
+                        ProfilePicture = "https://i.imgur.com/md1JLUh.jpeg",
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null,"Test1234!"),
                         Agency = agencies.FirstOrDefault(a => a.Name == "GreenLeaf Homes")
-                    }
+                    },
+                    new Realtor
+                    {
+                        FirstName = "Emil",
+                        LastName = "Modig",
+                        UserName = "emil.modig@sunsetrealty.se",
+                        NormalizedUserName = "EMIL.MODIG@SUNSETREALTY.SE",
+                        Email = "emil.modig@sunsetrealty.se",
+                        NormalizedEmail = "EMIL.MODIG@SUNSETREALTY.SE",
+                        PhoneNumber = "+46 70 9786837",
+                        ProfilePicture = "https://i.imgur.com/1lL2qXz.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Sunset Realty")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Johan",
+                        LastName = "Lindberg",
+                        UserName = "johan.lindberg@sunsetrealty.se",
+                        NormalizedUserName = "JOHAN.LINDBERG@SUNSETREALTY.SE",
+                        Email = "johan.lindberg@sunsetrealty.se",
+                        NormalizedEmail = "JOHAN.LINDBERG@SUNSETREALTY.SE",
+                        PhoneNumber = "+46 70 4061838",
+                        ProfilePicture = "https://i.imgur.com/2udU0aP.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Sunset Realty")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Sara",
+                        LastName = "Andersson",
+                        UserName = "sara.andersson@sunsetrealty.se",
+                        NormalizedUserName = "SARA.ANDERSSON@SUNSETREALTY.SE",
+                        Email = "sara.andersson@sunsetrealty.se",
+                        NormalizedEmail = "SARA.ANDERSSON@SUNSETREALTY.SE",
+                        PhoneNumber = "+46 70 8533139",
+                        ProfilePicture = "https://i.imgur.com/ejhGhZR.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Sunset Realty")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Mikael",
+                        LastName = "Svensson",
+                        UserName = "mikael.svensson@urbannest.se",
+                        NormalizedUserName = "MIKAEL.SVENSSON@URBANNEST.SE",
+                        Email = "mikael.svensson@urbannest.se",
+                        NormalizedEmail = "MIKAEL.SVENSSON@URBANNEST.SE",
+                        PhoneNumber = "+46 70 2106961",
+                        ProfilePicture = "https://i.imgur.com/PlU1MJo.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Urban Nest")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Emma",
+                        LastName = "Nilsson",
+                        UserName = "emma.nilsson@urbannest.se",
+                        NormalizedUserName = "EMMA.NILSSON@URBANNEST.SE",
+                        Email = "emma.nilsson@urbannest.se",
+                        NormalizedEmail = "EMMA.NILSSON@URBANNEST.SE",
+                        PhoneNumber = "+46 70 1668044",
+                        ProfilePicture = "https://i.imgur.com/46ghKhh.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Urban Nest")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "David",
+                        LastName = "Ekström",
+                        UserName = "david.ekström@urbannest.se",
+                        NormalizedUserName = "DAVID.EKSTRÖM@URBANNEST.SE",
+                        Email = "david.ekström@urbannest.se",
+                        NormalizedEmail = "DAVID.EKSTRÖM@URBANNEST.SE",
+                        PhoneNumber = "+46 70 7255306",
+                        ProfilePicture = "https://i.imgur.com/7YrcwHP.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Urban Nest")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Lisa",
+                        LastName = "Holm",
+                        UserName = "lisa.holm@mountainview.se",
+                        NormalizedUserName = "LISA.HOLM@MOUNTAINVIEW.SE",
+                        Email = "lisa.holm@mountainview.se",
+                        NormalizedEmail = "LISA.HOLM@MOUNTAINVIEW.SE",
+                        PhoneNumber = "+46 70 1278492",
+                        ProfilePicture = "https://i.imgur.com/tI51kYP.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Mountain View Estates")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Andreas",
+                        LastName = "Persson",
+                        UserName = "andreas.persson@mountainview.se",
+                        NormalizedUserName = "ANDREAS.PERSSON@MOUNTAINVIEW.SE",
+                        Email = "andreas.persson@mountainview.se",
+                        NormalizedEmail = "ANDREAS.PERSSON@MOUNTAINVIEW.SE",
+                        PhoneNumber = "+46 70 3284716",
+                        ProfilePicture = "https://i.imgur.com/cdx6kGj.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Mountain View Estates")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Nina",
+                        LastName = "Axelsson",
+                        UserName = "nina.axelsson@mountainview.se",
+                        NormalizedUserName = "NINA.AXELSSON@MOUNTAINVIEW.SE",
+                        Email = "nina.axelsson@mountainview.se",
+                        NormalizedEmail = "NINA.AXELSSON@MOUNTAINVIEW.SE",
+                        PhoneNumber = "+46 70 5639871",
+                        ProfilePicture = "https://i.imgur.com/xB9iqXO.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Mountain View Estates")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Oskar",
+                        LastName = "Berglund",
+                        UserName = "oskar.berglund@eliteproperty.se",
+                        NormalizedUserName = "OSKAR.BERGLUND@ELITEPROPERTY.SE",
+                        Email = "oskar.berglund@eliteproperty.se",
+                        NormalizedEmail = "OSKAR.BERGLUND@ELITEPROPERTY.SE",
+                        PhoneNumber = "+46 70 8152374",
+                        ProfilePicture = "https://i.imgur.com/r7bxbEs.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Elite Property Group")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Matilda",
+                        LastName = "Ström",
+                        UserName = "matilda.ström@eliteproperty.se",
+                        NormalizedUserName = "MATILDA.STRÖM@ELITEPROPERTY.SE",
+                        Email = "matilda.ström@eliteproperty.se",
+                        NormalizedEmail = "MATILDA.STRÖM@ELITEPROPERTY.SE",
+                        PhoneNumber = "+46 70 3472836",
+                        ProfilePicture = "https://i.imgur.com/AIKgPy2.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Elite Property Group")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Fredrik",
+                        LastName = "Hansson",
+                        UserName = "fredrik.hansson@eliteproperty.se",
+                        NormalizedUserName = "FREDRIK.HANSSON@ELITEPROPERTY.SE",
+                        Email = "fredrik.hansson@eliteproperty.se",
+                        NormalizedEmail = "FREDRIK.HANSSON@ELITEPROPERTY.SE",
+                        PhoneNumber = "+46 70 2391432",
+                        ProfilePicture = "https://i.imgur.com/dVEgj6X.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Elite Property Group")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Sofia",
+                        LastName = "Lindqvist",
+                        UserName = "sofia.lindqvist@greenleaf.se",
+                        NormalizedUserName = "SOFIA.LINDQVIST@GREENLEAF.SE",
+                        Email = "sofia.lindqvist@greenleaf.se",
+                        NormalizedEmail = "SOFIA.LINDQVIST@GREENLEAF.SE",
+                        PhoneNumber = "+46 70 2392851",
+                        ProfilePicture = "https://i.imgur.com/LThFVBX.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "GreenLeaf Homes")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Henrik",
+                        LastName = "Forsberg",
+                        UserName = "henrik.forsberg@greenleaf.se",
+                        NormalizedUserName = "HENRIK.FORSBERG@GREENLEAF.SE",
+                        Email = "henrik.forsberg@greenleaf.se",
+                        NormalizedEmail = "HENRIK.FORSBERG@GREENLEAF.SE",
+                        PhoneNumber = "+46 70 9378426",
+                        ProfilePicture = "https://i.imgur.com/SK5twdX.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "GreenLeaf Homes")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Julia",
+                        LastName = "Eklund",
+                        UserName = "julia.eklund@bluekey.se",
+                        NormalizedUserName = "JULIA.EKLUND@BLUEKEY.SE",
+                        Email = "julia.eklund@bluekey.se",
+                        NormalizedEmail = "JULIA.EKLUND@BLUEKEY.SE",
+                        PhoneNumber = "+46 70 8123479",
+                        ProfilePicture = "https://i.imgur.com/ROMdbgv.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "BlueKey Estates")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Marcus",
+                        LastName = "Sandberg",
+                        UserName = "marcus.sandberg@anchoroak.se",
+                        NormalizedUserName = "MARCUS.SANDBERG@ANCHOROAK.SE",
+                        Email = "marcus.sandberg@anchoroak.se",
+                        NormalizedEmail = "MARCUS.SANDBERG@ANCHOROAK.SE",
+                        PhoneNumber = "+46 70 4356712",
+                        ProfilePicture = "https://i.imgur.com/LoUXRdU.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Anchor & Oak Properties")
+                    },
+                    new Realtor
+                    {
+                        FirstName = "Tobias",
+                        LastName = "Granlund",
+                        UserName = "tobias.granlund@bluekey.se",
+                        NormalizedUserName = "TOBIAS.GRANLUND@BLUEKEY.SE",
+                        Email = "tobias.granlund@bluekey.se",
+                        NormalizedEmail = "TOBIAS.GRANLUND@BLUEKEY.SE",
+                        PhoneNumber = "+46 70 4728391",
+                        ProfilePicture = "https://i.imgur.com/3eAIYza.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "BlueKey Estates")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Amelia",
+                        LastName = "Sundin",
+                        UserName = "amelia.sundin@bluekey.se",
+                        NormalizedUserName = "AMELIA.SUNDIN@BLUEKEY.SE",
+                        Email = "amelia.sundin@bluekey.se",
+                        NormalizedEmail = "AMELIA.SUNDIN@BLUEKEY.SE",
+                        PhoneNumber = "+46 70 9457234",
+                        ProfilePicture = "https://i.imgur.com/r1xANVj.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "BlueKey Estates")
+                    },
+                    new Realtor
+                    {
+                        FirstName = "Viktor",
+                        LastName = "Blom",
+                        UserName = "viktor.blom@anchoroak.se",
+                        NormalizedUserName = "VIKTOR.BLOM@ANCHOROAK.SE",
+                        Email = "viktor.blom@anchoroak.se",
+                        NormalizedEmail = "VIKTOR.BLOM@ANCHOROAK.SE",
+                        PhoneNumber = "+46 70 3456281",
+                        ProfilePicture = "https://i.imgur.com/m2QXP5u.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Anchor & Oak Properties")
+                    },
+
+                    new Realtor
+                    {
+                        FirstName = "Felicia",
+                        LastName = "Hedlund",
+                        UserName = "felicia.hedlund@anchoroak.se",
+                        NormalizedUserName = "FELICIA.HEDLUND@ANCHOROAK.SE",
+                        Email = "felicia.hedlund@anchoroak.se",
+                        NormalizedEmail = "FELICIA.HEDLUND@ANCHOROAK.SE",
+                        PhoneNumber = "+46 70 8943275",
+                        ProfilePicture = "https://i.imgur.com/U8dPfRG.jpeg",
+                        EmailConfirmed = true,
+                        PasswordHash = hasher.HashPassword(null,"Test1234!"),
+                        Agency = agencies.FirstOrDefault(a => a.Name == "Anchor & Oak Properties")
+                    },
+
+
                 };
                 ctx.Realtors.AddRange(realtors);
                 ctx.SaveChanges();
@@ -189,6 +501,16 @@ namespace AlphaHemAPI.Data
                     {
                         RoleId = ctx.Roles.FirstOrDefault(r => r.Name == ApiRoles.RealtorAdmin).Id,
                         UserId = ctx.Realtors.FirstOrDefault(r => r.Email == "elin.karlsson@greenleaf.se").Id
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = ctx.Roles.FirstOrDefault(r => r.Name == ApiRoles.RealtorAdmin).Id,
+                        UserId = ctx.Realtors.FirstOrDefault(r => r.Email == "julia.eklund@bluekey.se").Id
+                    },
+                    new IdentityUserRole<string>
+                    {
+                        RoleId = ctx.Roles.FirstOrDefault(r => r.Name == ApiRoles.RealtorAdmin).Id,
+                        UserId = ctx.Realtors.FirstOrDefault(r => r.Email == "viktor.blom@anchoroak.se").Id
                     },
                 };
                 ctx.UserRoles.AddRange(userRoles);
@@ -682,7 +1004,1090 @@ namespace AlphaHemAPI.Data
                         Category = Category.Villa,
                         Municipality = municipalities.FirstOrDefault(m => m.Name == "Växjö"),
                         Realtor = realtors.FirstOrDefault(r => r.Email == "elin.karlsson@greenleaf.se")
-                    }
+                    },
+
+
+
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 1995,
+                        Price = 8000000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 18808m,
+                        LivingArea = 100m,
+                        SecondaryArea = 20m,
+                        LotArea = 900m,
+                        Address = "Storgatan 30, Stockholm",
+                        Description = "Ljus och modern bostad med öppen planlösning och närhet till centrum.",
+                        Images = new List<string> { "https://i.imgur.com/lKTRoTG.png?img=120", "https://i.imgur.com/rGhkKJL.png?img=100", "https://i.imgur.com/y8v50T9.png?img=89" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Stockholm"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "emil.modig@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2015,
+                        Price = 8300000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 23545m,
+                        LivingArea = 92m,
+                        SecondaryArea = 5m,
+                        LotArea = 400m,
+                        Address = "Linnégatan 56, Göteborg",
+                        Description = "Perfekt familjevilla med stor trädgård och lugnt läge.",
+                        Images = new List<string> { "https://i.imgur.com/OGhmj9M.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Göteborg"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "emil.modig@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2008,
+                        Price = 9400000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 12195m,
+                        LivingArea = 157m,
+                        SecondaryArea = 0m,
+                        LotArea = 600m,
+                        Address = "Sveavägen 49, Malmö",
+                        Description = "Stilren lägenhet med balkong och goda kommunikationer.",
+                        Images = new List<string> { "https://i.imgur.com/kNtYCDX.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Malmö"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "emil.modig@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2015,
+                        Price = 2900000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 25702m,
+                        LivingArea = 150m,
+                        SecondaryArea = 0m,
+                        LotArea = 600m,
+                        Address = "Kungsgatan 28, Uppsala",
+                        Description = "Charmigt hus i populärt område, nära skolor och service.",
+                        Images = new List<string> { "https://i.imgur.com/DnLCuxP.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Uppsala"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "johan.lindberg@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 1996,
+                        Price = 8300000m,
+                        MonthlyFee = 2900m,
+                        YearlyOperatingCost = 21259m,
+                        LivingArea = 180m,
+                        SecondaryArea = 10m,
+                        LotArea = 400m,
+                        Address = "Drottninggatan 68, Västerås",
+                        Description = "Välplanerat radhus med solig uteplats och grönområden omkring.",
+                        Images = new List<string> { "https://i.imgur.com/11T1ZoX.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Västerås"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "johan.lindberg@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2020,
+                        Price = 9000000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 19017m,
+                        LivingArea = 172m,
+                        SecondaryArea = 5m,
+                        LotArea = 100m,
+                        Address = "Västra Hamngatan 87, Örebro",
+                        Description = "Nyproducerad lägenhet med exklusiva materialval.",
+                        Images = new List<string> { "https://i.imgur.com/sDBaqZQ.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Örebro"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "johan.lindberg@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 1995,
+                        Price = 4700000m,
+                        MonthlyFee = 2900m,
+                        YearlyOperatingCost = 28776m,
+                        LivingArea = 126m,
+                        SecondaryArea = 20m,
+                        LotArea = 400m,
+                        Address = "Östra Storgatan 50, Linköping",
+                        Description = "Rymlig villa med dubbelgarage och utsikt över naturen.",
+                        Images = new List<string> { "https://i.imgur.com/bRjq2s5.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Linköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "sara.andersson@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 2015,
+                        Price = 7300000m,
+                        MonthlyFee = 2900m,
+                        YearlyOperatingCost = 20983m,
+                        LivingArea = 111m,
+                        SecondaryArea = 5m,
+                        LotArea = 100m,
+                        Address = "Tegelbruksgatan 1, Helsingborg",
+                        Description = "Mysig bostad med kakelugn och trägolv i original.",
+                        Images = new List<string> { "https://i.imgur.com/StHqavc.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Helsingborg"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "sara.andersson@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2013,
+                        Price = 6800000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 11349m,
+                        LivingArea = 136m,
+                        SecondaryArea = 20m,
+                        LotArea = 600m,
+                        Address = "Ringvägen 73, Norrköping",
+                        Description = "Centralt boende med allt du behöver runt hörnet.",
+                        Images = new List<string> { "https://i.imgur.com/Zx7OoA2.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Norrköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "sara.andersson@sunsetrealty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2019,
+                        Price = 5300000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 14298m,
+                        LivingArea = 57m,
+                        SecondaryArea = 10m,
+                        LotArea = 600m,
+                        Address = "Strandvägen 30, Jönköping",
+                        Description = "Nära till vatten och natur – perfekt för friluftsliv.",
+                        Images = new List<string> { "https://i.imgur.com/sH3cM6B.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Jönköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "mikael.svensson@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 2000,
+                        Price = 9500000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 25579m,
+                        LivingArea = 115m,
+                        SecondaryArea = 10m,
+                        LotArea = 0m,
+                        Address = "Norrlandsgatan 23, Lund",
+                        Description = "Energieffektiv fastighet med moderna lösningar.",
+                        Images = new List<string> { "https://i.imgur.com/dtfoQVI.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Lund"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "mikael.svensson@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2013,
+                        Price = 4600000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 27642m,
+                        LivingArea = 108m,
+                        SecondaryArea = 5m,
+                        LotArea = 200m,
+                        Address = "Skolgatan 54, Umeå",
+                        Description = "Välskött hem med stort renoverat kök och vardagsrum.",
+                        Images = new List<string> { "https://i.imgur.com/uEVJdUz.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Umeå"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "mikael.svensson@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 2019,
+                        Price = 4500000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 18905m,
+                        LivingArea = 152m,
+                        SecondaryArea = 10m,
+                        LotArea = 0m,
+                        Address = "Parkgatan 5, Gävle",
+                        Description = "Fantastisk utsikt och genomgående hög standard.",
+                        Images = new List<string> { "https://i.imgur.com/z8JhHgJ.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Gävle"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "emma.nilsson@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2009,
+                        Price = 3900000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 21127m,
+                        LivingArea = 132m,
+                        SecondaryArea = 0m,
+                        LotArea = 0m,
+                        Address = "Industrigatan 74, Borås",
+                        Description = "Optimalt pendlarläge med närhet till tåg och buss.",
+                        Images = new List<string> { "https://i.imgur.com/LSmD4u3.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Borås"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "emma.nilsson@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 1995,
+                        Price = 2100000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 13774m,
+                        LivingArea = 92m,
+                        SecondaryArea = 20m,
+                        LotArea = 0m,
+                        Address = "Södra Vägen 30, Sundsvall",
+                        Description = "Bo bekvämt och stilfullt i denna hemtrevliga bostad.",
+                        Images = new List<string> { "https://i.imgur.com/er2R14m.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Sundsvall"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "emma.nilsson@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2008,
+                        Price = 6500000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 22885m,
+                        LivingArea = 129m,
+                        SecondaryArea = 10m,
+                        LotArea = 900m,
+                        Address = "Bergsgatan 5, Stockholm",
+                        Description = "Unikt läge med både närhet till stad och natur.",
+                        Images = new List<string> { "https://i.imgur.com/0ybTQWK.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Stockholm"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "david.ekström@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2011,
+                        Price = 8000000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 27153m,
+                        LivingArea = 160m,
+                        SecondaryArea = 5m,
+                        LotArea = 900m,
+                        Address = "Kyrkogatan 37, Göteborg",
+                        Description = "Lugnt och barnvänligt område med fina promenadstråk.",
+                        Images = new List<string> { "https://i.imgur.com/GPozBhw.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Göteborg"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "david.ekström@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 2012,
+                        Price = 4300000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 19811m,
+                        LivingArea = 144m,
+                        SecondaryArea = 5m,
+                        LotArea = 100m,
+                        Address = "Fabriksgatan 32, Malmö",
+                        Description = "Underbar sekelskifteslägenhet med högt i tak.",
+                        Images = new List<string> { "https://i.imgur.com/1Popttd.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Malmö"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "david.ekström@urbannest.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 2012,
+                        Price = 7500000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 18604m,
+                        LivingArea = 140m,
+                        SecondaryArea = 10m,
+                        LotArea = 100m,
+                        Address = "Torggatan 85, Uppsala",
+                        Description = "Elegant boende med mycket ljus och rymd.",
+                        Images = new List<string> { "https://i.imgur.com/fq2YEGg.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Uppsala"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "lisa.holm@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2000,
+                        Price = 7400000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 11354m,
+                        LivingArea = 140m,
+                        SecondaryArea = 0m,
+                        LotArea = 900m,
+                        Address = "Skogsvägen 1, Västerås",
+                        Description = "Modern villa med smarta hemfunktioner.",
+                        Images = new List<string> { "https://i.imgur.com/P8cCB6g.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Västerås"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "lisa.holm@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 2001,
+                        Price = 6700000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 23442m,
+                        LivingArea = 130m,
+                        SecondaryArea = 20m,
+                        LotArea = 600m,
+                        Address = "Storgatan 98, Örebro",
+                        Description = "Ljus och modern bostad med öppen planlösning och närhet till centrum.",
+                        Images = new List<string> { "https://i.imgur.com/1SgQ2d5.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Örebro"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "lisa.holm@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 1990,
+                        Price = 4300000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 18615m,
+                        LivingArea = 69m,
+                        SecondaryArea = 0m,
+                        LotArea = 600m,
+                        Address = "Linnégatan 1, Linköping",
+                        Description = "Perfekt familjevilla med stor trädgård och lugnt läge.",
+                        Images = new List<string> { "https://i.imgur.com/YsvV8uL.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Linköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "andreas.persson@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 2004,
+                        Price = 4700000m,
+                        MonthlyFee = 2900m,
+                        YearlyOperatingCost = 21104m,
+                        LivingArea = 159m,
+                        SecondaryArea = 10m,
+                        LotArea = 200m,
+                        Address = "Sveavägen 4, Helsingborg",
+                        Description = "Stilren lägenhet med balkong och goda kommunikationer.",
+                        Images = new List<string> { "https://i.imgur.com/9wMPmDz.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Helsingborg"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "andreas.persson@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 2006,
+                        Price = 2200000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 12368m,
+                        LivingArea = 115m,
+                        SecondaryArea = 0m,
+                        LotArea = 900m,
+                        Address = "Kungsgatan 73, Norrköping",
+                        Description = "Charmigt hus i populärt område, nära skolor och service.",
+                        Images = new List<string> { "https://i.imgur.com/yQvOVw8.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Norrköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "andreas.persson@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 2016,
+                        Price = 8300000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 18100m,
+                        LivingArea = 136m,
+                        SecondaryArea = 0m,
+                        LotArea = 100m,
+                        Address = "Drottninggatan 70, Jönköping",
+                        Description = "Välplanerat radhus med solig uteplats och grönområden omkring.",
+                        Images = new List<string> { "https://i.imgur.com/NmvbVZQ.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Jönköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "nina.axelsson@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 2004,
+                        Price = 8700000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 26276m,
+                        LivingArea = 118m,
+                        SecondaryArea = 20m,
+                        LotArea = 900m,
+                        Address = "Västra Hamngatan 40, Lund",
+                        Description = "Nyproducerad lägenhet med exklusiva materialval.",
+                        Images = new List<string> { "https://i.imgur.com/0kdzpPT.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Lund"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "nina.axelsson@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2015,
+                        Price = 7500000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 11371m,
+                        LivingArea = 99m,
+                        SecondaryArea = 5m,
+                        LotArea = 200m,
+                        Address = "Östra Storgatan 43, Umeå",
+                        Description = "Rymlig villa med dubbelgarage och utsikt över naturen.",
+                        Images = new List<string> { "https://i.imgur.com/Yj5Bh6S.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Umeå"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "nina.axelsson@mountainview.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 2011,
+                        Price = 4800000m,
+                        MonthlyFee = 2900m,
+                        YearlyOperatingCost = 23486m,
+                        LivingArea = 76m,
+                        SecondaryArea = 5m,
+                        LotArea = 900m,
+                        Address = "Tegelbruksgatan 35, Gävle",
+                        Description = "Mysig bostad med kakelugn och trägolv i original.",
+                        Images = new List<string> { "https://i.imgur.com/MehMaqV.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Gävle"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "oskar.berglund@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 1991,
+                        Price = 8400000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 29818m,
+                        LivingArea = 63m,
+                        SecondaryArea = 20m,
+                        LotArea = 200m,
+                        Address = "Ringvägen 70, Borås",
+                        Description = "Centralt boende med allt du behöver runt hörnet.",
+                        Images = new List<string> { "https://i.imgur.com/M8JZrkE.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Borås"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "oskar.berglund@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2022,
+                        Price = 3100000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 14761m,
+                        LivingArea = 154m,
+                        SecondaryArea = 20m,
+                        LotArea = 600m,
+                        Address = "Strandvägen 85, Sundsvall",
+                        Description = "Nära till vatten och natur – perfekt för friluftsliv.",
+                        Images = new List<string> { "https://i.imgur.com/eD6QKUg.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Sundsvall"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "oskar.berglund@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 1991,
+                        Price = 9400000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 21344m,
+                        LivingArea = 115m,
+                        SecondaryArea = 20m,
+                        LotArea = 100m,
+                        Address = "Norrlandsgatan 48, Stockholm",
+                        Description = "Energieffektiv fastighet med moderna lösningar.",
+                        Images = new List<string> { "https://i.imgur.com/EGGsMrX.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Stockholm"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "matilda.ström@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 1998,
+                        Price = 8100000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 15335m,
+                        LivingArea = 152m,
+                        SecondaryArea = 5m,
+                        LotArea = 100m,
+                        Address = "Skolgatan 18, Göteborg",
+                        Description = "Välskött hem med stort renoverat kök och vardagsrum.",
+                        Images = new List<string> { "https://i.imgur.com/kfdtNTZ.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Göteborg"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "matilda.ström@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 1999,
+                        Price = 4300000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 15727m,
+                        LivingArea = 125m,
+                        SecondaryArea = 20m,
+                        LotArea = 100m,
+                        Address = "Parkgatan 29, Malmö",
+                        Description = "Fantastisk utsikt och genomgående hög standard.",
+                        Images = new List<string> { "https://i.imgur.com/tP4LtLo.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Malmö"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "matilda.ström@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 1998,
+                        Price = 6000000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 13244m,
+                        LivingArea = 87m,
+                        SecondaryArea = 5m,
+                        LotArea = 0m,
+                        Address = "Industrigatan 68, Uppsala",
+                        Description = "Optimalt pendlarläge med närhet till tåg och buss.",
+                        Images = new List<string> { "https://i.imgur.com/ae9mDVE.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Uppsala"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "fredrik.hansson@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 2022,
+                        Price = 4300000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 28869m,
+                        LivingArea = 139m,
+                        SecondaryArea = 5m,
+                        LotArea = 600m,
+                        Address = "Södra Vägen 26, Västerås",
+                        Description = "Bo bekvämt och stilfullt i denna hemtrevliga bostad.",
+                        Images = new List<string> { "https://i.imgur.com/DGziwYP.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Västerås"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "fredrik.hansson@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 2023,
+                        Price = 2200000m,
+                        MonthlyFee = 2900m,
+                        YearlyOperatingCost = 10649m,
+                        LivingArea = 133m,
+                        SecondaryArea = 5m,
+                        LotArea = 200m,
+                        Address = "Bergsgatan 96, Örebro",
+                        Description = "Unikt läge med både närhet till stad och natur.",
+                        Images = new List<string> { "https://i.imgur.com/A7icKyb.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Örebro"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "fredrik.hansson@eliteproperty.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 2023,
+                        Price = 5000000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 12331m,
+                        LivingArea = 174m,
+                        SecondaryArea = 20m,
+                        LotArea = 100m,
+                        Address = "Kyrkogatan 42, Linköping",
+                        Description = "Lugnt och barnvänligt område med fina promenadstråk.",
+                        Images = new List<string> { "https://i.imgur.com/1cv08zy.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Linköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "sofia.lindqvist@greenleaf.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2006,
+                        Price = 4200000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 28291m,
+                        LivingArea = 86m,
+                        SecondaryArea = 20m,
+                        LotArea = 200m,
+                        Address = "Fabriksgatan 2, Helsingborg",
+                        Description = "Underbar sekelskifteslägenhet med högt i tak.",
+                        Images = new List<string> { "https://i.imgur.com/TByp4Ug.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Helsingborg"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "sofia.lindqvist@greenleaf.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 1996,
+                        Price = 3000000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 12078m,
+                        LivingArea = 71m,
+                        SecondaryArea = 20m,
+                        LotArea = 0m,
+                        Address = "Torggatan 63, Norrköping",
+                        Description = "Elegant boende med mycket ljus och rymd.",
+                        Images = new List<string> { "https://i.imgur.com/m8kISp5.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Norrköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "sofia.lindqvist@greenleaf.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 1999,
+                        Price = 7800000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 11837m,
+                        LivingArea = 82m,
+                        SecondaryArea = 5m,
+                        LotArea = 0m,
+                        Address = "Skogsvägen 15, Jönköping",
+                        Description = "Modern villa med smarta hemfunktioner.",
+                        Images = new List<string> { "https://i.imgur.com/WasOnd6.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Jönköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "henrik.forsberg@greenleaf.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 1994,
+                        Price = 8500000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 26183m,
+                        LivingArea = 113m,
+                        SecondaryArea = 0m,
+                        LotArea = 100m,
+                        Address = "Storgatan 63, Lund",
+                        Description = "Ljus och modern bostad med öppen planlösning och närhet till centrum.",
+                        Images = new List<string> { "https://i.imgur.com/z5G5j3x.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Lund"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "henrik.forsberg@greenleaf.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2002,
+                        Price = 6500000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 28931m,
+                        LivingArea = 125m,
+                        SecondaryArea = 20m,
+                        LotArea = 900m,
+                        Address = "Linnégatan 25, Umeå",
+                        Description = "Perfekt familjevilla med stor trädgård och lugnt läge.",
+                        Images = new List<string> { "https://i.imgur.com/S1OKlOd.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Umeå"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "henrik.forsberg@greenleaf.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2002,
+                        Price = 3700000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 23709m,
+                        LivingArea = 170m,
+                        SecondaryArea = 10m,
+                        LotArea = 400m,
+                        Address = "Sveavägen 76, Gävle",
+                        Description = "Stilren lägenhet med balkong och goda kommunikationer.",
+                        Images = new List<string> { "https://i.imgur.com/FZqmOle.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Gävle"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "julia.eklund@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2000,
+                        Price = 5500000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 27732m,
+                        LivingArea = 146m,
+                        SecondaryArea = 0m,
+                        LotArea = 100m,
+                        Address = "Kungsgatan 15, Borås",
+                        Description = "Charmigt hus i populärt område, nära skolor och service.",
+                        Images = new List<string> { "https://i.imgur.com/X0MqcxC.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Borås"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "julia.eklund@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2022,
+                        Price = 3800000m,
+                        MonthlyFee = 2900m,
+                        YearlyOperatingCost = 16012m,
+                        LivingArea = 84m,
+                        SecondaryArea = 20m,
+                        LotArea = 0m,
+                        Address = "Drottninggatan 31, Sundsvall",
+                        Description = "Välplanerat radhus med solig uteplats och grönområden omkring.",
+                        Images = new List<string> { "https://i.imgur.com/zeMuHwr.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Sundsvall"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "julia.eklund@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2014,
+                        Price = 4600000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 14025m,
+                        LivingArea = 180m,
+                        SecondaryArea = 10m,
+                        LotArea = 600m,
+                        Address = "Västra Hamngatan 96, Stockholm",
+                        Description = "Nyproducerad lägenhet med exklusiva materialval.",
+                        Images = new List<string> { "https://i.imgur.com/BIW8qgD.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Stockholm"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "tobias.granlund@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 2020,
+                        Price = 7200000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 25918m,
+                        LivingArea = 96m,
+                        SecondaryArea = 5m,
+                        LotArea = 400m,
+                        Address = "Östra Storgatan 52, Göteborg",
+                        Description = "Rymlig villa med dubbelgarage och utsikt över naturen.",
+                        Images = new List<string> { "https://i.imgur.com/VGWOjzh.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Göteborg"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "tobias.granlund@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 1996,
+                        Price = 7300000m,
+                        MonthlyFee = 2900m,
+                        YearlyOperatingCost = 13747m,
+                        LivingArea = 137m,
+                        SecondaryArea = 10m,
+                        LotArea = 600m,
+                        Address = "Tegelbruksgatan 94, Malmö",
+                        Description = "Mysig bostad med kakelugn och trägolv i original.",
+                        Images = new List<string> { "https://i.imgur.com/WOqRoUn.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Malmö"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "tobias.granlund@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 1995,
+                        Price = 9300000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 17015m,
+                        LivingArea = 81m,
+                        SecondaryArea = 20m,
+                        LotArea = 0m,
+                        Address = "Ringvägen 2, Uppsala",
+                        Description = "Centralt boende med allt du behöver runt hörnet.",
+                        Images = new List<string> { "https://i.imgur.com/Pf35FFv.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Uppsala"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "amelia.sundin@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 2022,
+                        Price = 7500000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 29801m,
+                        LivingArea = 135m,
+                        SecondaryArea = 0m,
+                        LotArea = 200m,
+                        Address = "Strandvägen 96, Västerås",
+                        Description = "Nära till vatten och natur – perfekt för friluftsliv.",
+                        Images = new List<string> { "https://i.imgur.com/hHBSP6X.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Västerås"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "amelia.sundin@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 1993,
+                        Price = 6400000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 10435m,
+                        LivingArea = 145m,
+                        SecondaryArea = 20m,
+                        LotArea = 400m,
+                        Address = "Norrlandsgatan 61, Örebro",
+                        Description = "Energieffektiv fastighet med moderna lösningar.",
+                        Images = new List<string> { "https://i.imgur.com/G9cSJaJ.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Örebro"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "amelia.sundin@bluekey.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 1993,
+                        Price = 9500000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 20740m,
+                        LivingArea = 75m,
+                        SecondaryArea = 20m,
+                        LotArea = 600m,
+                        Address = "Skolgatan 34, Linköping",
+                        Description = "Välskött hem med stort renoverat kök och vardagsrum.",
+                        Images = new List<string> { "https://i.imgur.com/UO4cwY3.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Linköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "marcus.sandberg@anchoroak.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2017,
+                        Price = 6300000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 23836m,
+                        LivingArea = 79m,
+                        SecondaryArea = 20m,
+                        LotArea = 100m,
+                        Address = "Parkgatan 31, Helsingborg",
+                        Description = "Fantastisk utsikt och genomgående hög standard.",
+                        Images = new List<string> { "https://i.imgur.com/OGhmj9M.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Helsingborg"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "marcus.sandberg@anchoroak.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 2,
+                        YearBuilt = 2002,
+                        Price = 3800000m,
+                        MonthlyFee = 0m,
+                        YearlyOperatingCost = 10697m,
+                        LivingArea = 151m,
+                        SecondaryArea = 10m,
+                        LotArea = 900m,
+                        Address = "Industrigatan 26, Norrköping",
+                        Description = "Optimalt pendlarläge med närhet till tåg och buss.",
+                        Images = new List<string> { "https://i.imgur.com/kNtYCDX.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Norrköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "marcus.sandberg@anchoroak.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 6,
+                        YearBuilt = 2021,
+                        Price = 7100000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 24026m,
+                        LivingArea = 145m,
+                        SecondaryArea = 0m,
+                        LotArea = 600m,
+                        Address = "Södra Vägen 72, Jönköping",
+                        Description = "Bo bekvämt och stilfullt i denna hemtrevliga bostad.",
+                        Images = new List<string> { "https://i.imgur.com/DnLCuxP.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Jönköping"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "viktor.blom@anchoroak.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 1996,
+                        Price = 5100000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 19040m,
+                        LivingArea = 84m,
+                        SecondaryArea = 0m,
+                        LotArea = 900m,
+                        Address = "Bergsgatan 20, Lund",
+                        Description = "Unikt läge med både närhet till stad och natur.",
+                        Images = new List<string> { "https://i.imgur.com/11T1ZoX.jpeg" },
+                        Category = Category.Villa,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Lund"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "viktor.blom@anchoroak.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 2015,
+                        Price = 3100000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 28835m,
+                        LivingArea = 116m,
+                        SecondaryArea = 10m,
+                        LotArea = 200m,
+                        Address = "Kyrkogatan 95, Umeå",
+                        Description = "Lugnt och barnvänligt område med fina promenadstråk.",
+                        Images = new List<string> { "https://i.imgur.com/sDBaqZQ.jpeg" },
+                        Category = Category.Bostadsrättslägenhet,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Umeå"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "viktor.blom@anchoroak.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 4,
+                        YearBuilt = 2007,
+                        Price = 8900000m,
+                        MonthlyFee = 5200m,
+                        YearlyOperatingCost = 11891m,
+                        LivingArea = 69m,
+                        SecondaryArea = 5m,
+                        LotArea = 900m,
+                        Address = "Fabriksgatan 61, Gävle",
+                        Description = "Underbar sekelskifteslägenhet med högt i tak.",
+                        Images = new List<string> { "https://i.imgur.com/bRjq2s5.jpeg" },
+                        Category = Category.Bostadsrättsradhus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Gävle"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "felicia.hedlund@anchoroak.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 5,
+                        YearBuilt = 2001,
+                        Price = 6200000m,
+                        MonthlyFee = 3200m,
+                        YearlyOperatingCost = 15698m,
+                        LivingArea = 174m,
+                        SecondaryArea = 0m,
+                        LotArea = 600m,
+                        Address = "Torggatan 56, Borås",
+                        Description = "Elegant boende med mycket ljus och rymd.",
+                        Images = new List<string> { "https://i.imgur.com/StHqavc.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Borås"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "felicia.hedlund@anchoroak.se")
+                    },
+
+                    new Listing
+                    {
+                        Rooms = 3,
+                        YearBuilt = 2003,
+                        Price = 9400000m,
+                        MonthlyFee = 4500m,
+                        YearlyOperatingCost = 21778m,
+                        LivingArea = 160m,
+                        SecondaryArea = 10m,
+                        LotArea = 0m,
+                        Address = "Skogsvägen 33, Sundsvall",
+                        Description = "Modern villa med smarta hemfunktioner.",
+                        Images = new List<string> { "https://i.imgur.com/Zx7OoA2.jpeg" },
+                        Category = Category.Fritidshus,
+                        Municipality = municipalities.FirstOrDefault(m => m.Name == "Sundsvall"),
+                        Realtor = realtors.FirstOrDefault(r => r.Email == "felicia.hedlund@anchoroak.se")
+                    },
                 };
                 ctx.Listings.AddRange(listings);
             }

@@ -29,6 +29,7 @@ namespace AlphaHemAPI.Services
                     return new Response<AgencyWithRealtorsDto>
                     {
                         Message = $"Kunde inte hitta en mäklarbyrå med ID: {id}",
+                        // Errors = ...
                         StatusCode = HttpStatusCode.NotFound,
                         Data = null
                     };

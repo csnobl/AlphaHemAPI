@@ -115,8 +115,7 @@ namespace AlphaHemAPI.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, response);
                 default:
                     return Ok(response);
-            }
-            ;
+            };
         }
 
         // Author: Niklas

@@ -51,7 +51,6 @@ namespace AlphaHemAPI
             
             //Service layers
             builder.Services.AddScoped<RealtorService>();
-            builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<ListingService>();
             builder.Services.AddScoped<AgencyService>();
             builder.Services.AddScoped<MunicipalityService>();

@@ -37,7 +37,6 @@ namespace AlphaHemAPI.Services
                 var agencyDto = mapper.Map<AgencyWithRealtorsDto>(agency);
                 return new Response<AgencyWithRealtorsDto>
                 {
-                    Success = true,
                     StatusCode = HttpStatusCode.OK,
                     Data = agencyDto
                 };
@@ -65,7 +64,6 @@ namespace AlphaHemAPI.Services
 
                 return new Response<List<AgencyWithRealtorsDto>>
                 {
-                    Success = true,
                     StatusCode = HttpStatusCode.OK,
                     Data = agencyList
                 };

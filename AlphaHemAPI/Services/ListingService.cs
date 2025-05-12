@@ -50,7 +50,6 @@ namespace AlphaHemAPI.Services
                 // Author: ALL
                 return new Response<PagedListingListDto>
                 {
-                    Success = true,
                     Data = pagedListingListDto,
                     StatusCode = HttpStatusCode.OK
                 };
@@ -87,7 +86,6 @@ namespace AlphaHemAPI.Services
 
                 return new Response<ListingDetailsDto>
                 {
-                    Success = true,
                     Data = listingDto,
                     StatusCode = HttpStatusCode.OK
                 };
@@ -140,7 +138,6 @@ namespace AlphaHemAPI.Services
 
                 return new Response
                 {
-                    Success = true,
                     StatusCode = HttpStatusCode.Created
                 };
             }
@@ -191,8 +188,7 @@ namespace AlphaHemAPI.Services
 
                 return new Response
                 {
-                    Success = true,
-                    StatusCode = HttpStatusCode.Accepted
+                    StatusCode = HttpStatusCode.NoContent
                 };
 
             }
@@ -225,7 +221,6 @@ namespace AlphaHemAPI.Services
                 await listingRepository.DeleteAsync(listing);
                 return new Response
                 {
-                    Success = true,
                     StatusCode = HttpStatusCode.NoContent
                 };
             }
@@ -250,7 +245,6 @@ namespace AlphaHemAPI.Services
 
                 return new Response<List<ListingListDto>>
                 {
-                    Success = true,
                     Data = listingDtos,
                     StatusCode = HttpStatusCode.OK
                 };

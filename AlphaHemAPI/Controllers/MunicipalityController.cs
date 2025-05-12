@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AlphaHemAPI.Data.DTO;
+using System.Net;
 
 namespace AlphaHemAPI.Controllers
 {
@@ -21,8 +22,12 @@ namespace AlphaHemAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMunicipalities()
         {
-            var municipalities = await municipalityService.GetAllMunicipalitiesAsync();
-            return Ok(municipalities);
+            var response = await municipalityService.GetAllMunicipalitiesAsync();
+
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                return StatusCode(StatusCodes.Status500InternalServerError, response);
+
+            return Ok(response.Data);
         }
     }
 }

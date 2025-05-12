@@ -14,12 +14,10 @@ namespace AlphaHemAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<Realtor> userManager;
         private readonly AuthService authService;
 
-        public AuthController(UserManager<Realtor> userManager, AuthService authService)
+        public AuthController(AuthService authService)
         {
-            this.userManager = userManager;
             this.authService = authService;
         }
 

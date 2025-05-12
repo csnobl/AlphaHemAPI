@@ -29,6 +29,7 @@ namespace AlphaHemAPI.Services
                     return new Response<AgencyWithRealtorsDto>
                     {
                         Message = $"Kunde inte hitta en mäklarbyrå med ID: {id}",
+                        // Errors = ...
                         StatusCode = HttpStatusCode.NotFound,
                         Data = null
                     };
@@ -36,7 +37,6 @@ namespace AlphaHemAPI.Services
                 var agencyDto = mapper.Map<AgencyWithRealtorsDto>(agency);
                 return new Response<AgencyWithRealtorsDto>
                 {
-                    Success = true,
                     StatusCode = HttpStatusCode.OK,
                     Data = agencyDto
                 };
@@ -64,7 +64,6 @@ namespace AlphaHemAPI.Services
 
                 return new Response<List<AgencyWithRealtorsDto>>
                 {
-                    Success = true,
                     StatusCode = HttpStatusCode.OK,
                     Data = agencyList
                 };

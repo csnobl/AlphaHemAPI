@@ -114,9 +114,8 @@ namespace AlphaHemAPI.Controllers
                 case HttpStatusCode.InternalServerError:
                     return StatusCode(StatusCodes.Status500InternalServerError, response);
                 default:
-                    return Ok(response);
-            }
-            ;
+                    return NoContent();
+            };
         }
 
         // Author: Niklas

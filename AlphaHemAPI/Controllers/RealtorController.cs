@@ -20,33 +20,33 @@ namespace AlphaHemAPI.Controllers
             this.realtorService = realtorService;
         }
 
-        // Author : Niklas
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RealtorRegisterDto registerDto)
-        {
-            var result = await realtorService.RegisterRealtorAsync(registerDto);
-            if (!result)
-                return BadRequest("Email is already taken or agency does not exist.");
-            return StatusCode(StatusCodes.Status201Created);
-        }
-
         //Author: Christoffer
-        // Co-author: Conny
+        // Co-author: ALL
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateRealtor(string id, [FromBody] RealtorUpdateDto realtorUpdateDto)
         {
+            var userId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
+            if (!string.Equals(userId, id))
+                return StatusCode(StatusCodes.Status403Forbidden, "Du har inte behörighet att redigera denna mäklare.");
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await realtorService.UpdateRealtorAsync(id, realtorUpdateDto);
+            var response = await realtorService.UpdateRealtorAsync(id, realtorUpdateDto);
 
-            if (!result)
-                return NotFound("Realtor not found or update failed.");
-
-            return NoContent();
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    return BadRequest(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(StatusCodes.Status500InternalServerError, response);
+                default:
+                    return NoContent();
+            }
         }
 
-        //Author : Dominika
+        // //Author : Dominika
         [HttpGet]
         public async Task<ActionResult<List<RealtorDto>>> GetAllRealtors()
         {
@@ -55,13 +55,20 @@ namespace AlphaHemAPI.Controllers
         }
 
         //Author : Smilla
+        // Co-author: ALL
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRealtorById(string id)
         {
-            var realtor = await realtorService.GetRealtorByIdAsync(id);
-            if (realtor == null)
-                return NotFound("Realtor not found.");
-            return Ok(realtor);
+            var response = await realtorService.GetRealtorByIdAsync(id);
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.NotFound:
+                    return NotFound(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(StatusCodes.Status500InternalServerError, response);
+                default:
+                    return Ok(response.Data);
+            }
         }
 
         //Author : ALL
@@ -70,32 +77,41 @@ namespace AlphaHemAPI.Controllers
         public async Task<IActionResult> ApproveEmailForRealtor(string id)
         {
             var adminId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
+            var response = await realtorService.ApproveEmailForRealtorAsync(id, adminId);
 
-            var result = await realtorService.ApproveEmailForRealtorAsync(id, adminId);
-            if (!result)
-                return NotFound("Realtor not found or already approved.");
-
-            return NoContent();
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.Forbidden:
+                    return StatusCode(StatusCodes.Status403Forbidden, response);
+                case HttpStatusCode.BadRequest:
+                    return BadRequest(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(500, response);
+                default:
+                    return NoContent();
+            }
         }
 
         // Author: Conny
+        // Co-author: ALL
         [HttpDelete("{id}")]
         [Authorize(Roles = ApiRoles.RealtorAdmin)]
         public async Task<IActionResult> DeleteRealtor(string id)
         {
             var adminId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
             var response = await realtorService.DeleteRealtorAsync(id, adminId);
-            if (!response.Success)
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.NotFound:
-                        return NotFound(response);
-                    case HttpStatusCode.BadRequest:
-                        return BadRequest(response);
-                    case HttpStatusCode.InternalServerError:
-                        return StatusCode(500, response);
-                }
-            return NoContent();
+
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.Forbidden:
+                    return StatusCode(StatusCodes.Status403Forbidden, response);
+                case HttpStatusCode.BadRequest:
+                    return BadRequest(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(500, response);
+                default:
+                    return NoContent();
+            }
         }
     }
 }

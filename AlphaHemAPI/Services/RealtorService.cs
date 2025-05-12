@@ -19,44 +19,38 @@ namespace AlphaHemAPI.Services
             this.mapper = mapper;
         }
 
-        // Author : Niklas
-        public async Task<bool> RegisterRealtorAsync(RealtorRegisterDto registerDto)
-        {
-            var existing = await realtorRepository.GetByEmailAsync(registerDto.Email);
-            if (existing != null)
-                return false;
-
-            var realtor = new Realtor
-            {
-                Email = registerDto.Email,
-                FirstName = registerDto.FirstName,
-                LastName = registerDto.LastName,
-                PhoneNumber = registerDto.PhoneNumber,
-                AgencyId = registerDto.AgencyId,
-                ProfilePicture = "",
-            };
-
-            await realtorRepository.AddAsync(realtor);
-            return true;
-        }
-
         //Author: Christoffer
-        public async Task<bool> UpdateRealtorAsync(string id, RealtorUpdateDto realtorUpdateDto)
+        public async Task<Response> UpdateRealtorAsync(string id, RealtorUpdateDto realtorUpdateDto)
         {
-            var realtor = await realtorRepository.GetAsync(id);
-            if (realtor == null)
-                return false;
-
-            mapper.Map(realtorUpdateDto, realtor);
-
             try
             {
+                var realtor = await realtorRepository.GetAsync(id);
+                if (realtor == null)
+                {
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Ett fel har inträffat vid uppdatering av mäklare.",
+                        Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {id}." }
+                    };
+                }
+
+                mapper.Map(realtorUpdateDto, realtor);
                 await realtorRepository.UpdateAsync(realtor);
-                return true;
+
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.NoContent
+                };
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new Response
+                {
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
             }
         }
 
@@ -68,79 +62,134 @@ namespace AlphaHemAPI.Services
         }
 
         //Author : Smilla
-        public async Task<RealtorDto?> GetRealtorByIdAsync(string id)
+        public async Task<Response<RealtorDto?>> GetRealtorByIdAsync(string id)
         {
-            var realtor = await realtorRepository.GetByIdWithAgencyAsync(id);
-            if (realtor == null)
-                return null;
-            return mapper.Map<RealtorDto>(realtor);
+            try
+            {
+                var realtor = await realtorRepository.GetByIdWithAgencyAsync(id);
+                if (realtor == null)
+                {
+                    return new Response<RealtorDto?>
+                    {
+                        StatusCode = HttpStatusCode.NotFound,
+                        Message = "Ett fel har inträffat vid hämtning av mäklare.",
+                        Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {id}." }
+                    };
+                }
+                var realtorDto = mapper.Map<RealtorDto>(realtor);
+                return new Response<RealtorDto?>
+                {
+                    Data = realtorDto,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response<RealtorDto?>
+                {
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
+
         }
 
         //Author : ALL
-        public async Task<bool> ApproveEmailForRealtorAsync(string userId, string adminId)
+        public async Task<Response> ApproveEmailForRealtorAsync(string userId, string adminId)
         {
-            var adminRealtor = await realtorRepository.GetAsync(adminId);
-            if (adminRealtor == null)
-                return false;
-
-            var realtor = await realtorRepository.GetAsync(userId);
-            if (realtor == null || realtor.EmailConfirmed)
-                return false;
-
-            if (realtor.AgencyId != adminRealtor.AgencyId)
-                return false;
-
-            realtor.EmailConfirmed = true;
             try
             {
+                var adminRealtor = await realtorRepository.GetAsync(adminId);
+                if (adminRealtor == null)
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Ett fel har inträffat vid aktivering av mäklare.",
+                        Errors = new List<string> { $"Ingen mäklaradministratör kunde hittas med ID: {adminId}." }
+                    };
+
+                var realtor = await realtorRepository.GetAsync(userId);
+                if (realtor == null)
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Ett fel har inträffat vid aktivering av mäklare.",
+                        Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {adminId}." }
+                    };
+                if (realtor.EmailConfirmed)
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Ett fel har inträffat vid aktivering av mäklare.",
+                        Errors = new List<string> { $"Mäklarens e-post är redan bekräftad." }
+                    };
+
+                if (realtor.AgencyId != adminRealtor.AgencyId)
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.Forbidden,
+                        Message = "Ett fel har inträffat vid aktivering av mäklare.",
+                        Errors = new List<string> { $"Du har inte behörighet att bekräfta mäklaren med ID: {userId}." }
+                    };
+
+                realtor.EmailConfirmed = true;
                 await realtorRepository.UpdateAsync(realtor);
-                return true;
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.NoContent
+                };
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new Response
+                {
+                    Message = "Ett oväntat fel uppstod vid aktivering av mäklare.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
             }
         }
 
         // Author: Conny
         public async Task<Response> DeleteRealtorAsync(string userId, string adminId)
         {
-            var adminRealtor = await realtorRepository.GetAsync(adminId);
-            var realtor = await realtorRepository.GetAsync(userId);
-
-            if (realtor == null)
-            {
-                return new Response
-                {
-                    Message = "Ett fel har uppstått vid hämtning av mäklare.",
-                    Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {userId}." },
-                    StatusCode = HttpStatusCode.NotFound
-                };
-            }
-            if (adminRealtor == null)
-            {
-                return new Response
-                {
-                    Message = "Ett fel har uppstått vid hämtning av mäklaradministratör.",
-                    Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {adminId}." },
-                    StatusCode = HttpStatusCode.NotFound
-                };
-            }
-            if (realtor.AgencyId != adminRealtor.AgencyId)
-            {
-                return new Response
-                {
-                    Message = "Ett fel har uppstått vid borttagning av mäklare",
-                    Errors = new List<string> { $"De angivna mäklarna tillhör inte samma mäklarbyrå (adminRealtor.AgencyId = {adminRealtor.AgencyId}, realtor.AgencyId = {realtor.AgencyId})." },
-                    StatusCode = HttpStatusCode.BadRequest
-                };
-            }
             try
             {
+                var adminRealtor = await realtorRepository.GetAsync(adminId);
+                if (adminRealtor == null)
+                {
+                    return new Response
+                    {
+                        Message = "Ett fel har uppstått vid hämtning av mäklaradministratör.",
+                        Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {adminId}." },
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
+                }
+
+                var realtor = await realtorRepository.GetAsync(userId);
+                if (realtor == null)
+                {
+                    return new Response
+                    {
+                        Message = "Ett fel har uppstått vid hämtning av mäklare.",
+                        Errors = new List<string> { $"Ingen mäklare kunde hittas med ID: {userId}." },
+                        StatusCode = HttpStatusCode.BadRequest
+                    };
+                }
+
+                if (realtor.AgencyId != adminRealtor.AgencyId)
+                {
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.Forbidden,
+                        Message = "Ett fel har inträffat vid borttagning av mäklare.",
+                        Errors = new List<string> { $"Du har inte behörighet att ta bort mäklaren med ID: {userId}." }
+                    };
+                }
+
                 await realtorRepository.DeleteAsync(realtor);
                 return new Response
                 {
-                    Success = true,
                     StatusCode = HttpStatusCode.NoContent
                 };
             }
@@ -153,7 +202,6 @@ namespace AlphaHemAPI.Services
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
-            
         }
     }
 }

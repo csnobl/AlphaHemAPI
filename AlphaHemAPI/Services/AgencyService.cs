@@ -10,11 +10,13 @@ namespace AlphaHemAPI.Services
     {
         private readonly IAgencyRepository agencyRepository;
         private readonly IMapper mapper;
+        private readonly IRealtorRepository realtorRepository;
 
-        public AgencyService(IAgencyRepository agencyRepository, IMapper mapper)
+        public AgencyService(IAgencyRepository agencyRepository, IMapper mapper, IRealtorRepository realtorRepository)
         {
             this.agencyRepository = agencyRepository;
             this.mapper = mapper;
+            this.realtorRepository = realtorRepository;
         }
 
         //Author: Mattias
@@ -78,8 +80,49 @@ namespace AlphaHemAPI.Services
                     StatusCode = HttpStatusCode.InternalServerError
                 };
             }
+        }
 
-            
+        //Author: Mattias
+        public async Task<Response> UpdateAgency(string adminId,AgencyUpdateDto agencyUpdateDto)
+        {
+            try
+            {
+                var agency = await agencyRepository.GetAsync(agencyUpdateDto.Id);
+                if (agency == null)
+                {
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Message = "Ett fel har inträffat vid uppdatering av byrå.",
+                        Errors = new List<string> { $"Ingen byrå kunde hittas med ID: {agencyUpdateDto.Id}." }
+                    };
+                }
+                var adminRealtor = await realtorRepository.GetAsync(adminId);
+                if (adminRealtor.AgencyId != agency.Id)
+                    return new Response
+                    {
+                        StatusCode = HttpStatusCode.Forbidden,
+                        Message = "Ett fel har inträffat vid uppdatering av byrå.",
+                        Errors = new List<string> { $"Du har inte behörighet att ändra byrån med ID: {agency.Id}." }
+                    };
+
+                mapper.Map(agencyUpdateDto, agency);
+                await agencyRepository.UpdateAsync(agency);
+
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.NoContent
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    Message = "Ett oväntat fel har inträffat.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+            }
         }
 
     }

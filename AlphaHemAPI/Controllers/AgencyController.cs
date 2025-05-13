@@ -1,6 +1,8 @@
 ﻿using System.Net;
+using AlphaHemAPI.Constants;
 using AlphaHemAPI.Data.DTO;
 using AlphaHemAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,10 +44,34 @@ namespace AlphaHemAPI.Controllers
         public async Task<ActionResult<List<AgencyWithRealtorsDto>>> GetAllAgencies()
         {
             var response = await agencyService.GetAllAgencies();
-            
+
             if (response.StatusCode == HttpStatusCode.InternalServerError)
                 return StatusCode(StatusCodes.Status500InternalServerError, response);
             return Ok(response.Data);
         }
+
+        //Author: Mattias
+        [HttpPut("{id}")]
+        [Authorize(Roles = ApiRoles.RealtorAdmin)]
+        public async Task<IActionResult> UpdateAgency([FromBody] AgencyUpdateDto agency)
+        {
+            var adminRealtorId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var response = await agencyService.UpdateAgency(adminRealtorId,agency);
+
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.BadRequest:
+                    return BadRequest(response);
+                case HttpStatusCode.InternalServerError:
+                    return StatusCode(StatusCodes.Status500InternalServerError, response);
+                default:
+                    return NoContent();
+            }
+        }
+
     }
 }

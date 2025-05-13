@@ -11,7 +11,7 @@ namespace AlphaHemAPI.Mappings
         public RealtorProfile()
         {
             CreateMap<Realtor, RealtorDto>()
-                .ForMember(dest => dest.Agency, opt => opt.MapFrom(src => src.Agency.Name));
+                .ForMember(dest => dest.AgencyName, opt => opt.MapFrom(src => src.Agency.Name));
         }
     }
 }

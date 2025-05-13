@@ -11,6 +11,7 @@ namespace AlphaHemAPI.Mappings
         public AgencyMappingProfile()
         {
             CreateMap<Agency, AgencyWithRealtorsDto>();
+            CreateMap<AgencyUpdateDto, Agency>();
         }
     }
 }

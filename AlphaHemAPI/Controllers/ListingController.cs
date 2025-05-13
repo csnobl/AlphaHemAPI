@@ -71,7 +71,14 @@ namespace AlphaHemAPI.Controllers
         public async Task<IActionResult> CreateListing([FromBody] ListingCreateDto listingCreateDto)
         {
             if (listingCreateDto.Images == null || listingCreateDto.Images.Count == 0 || listingCreateDto.Images.Count > 40)
-                return BadRequest("Bostäder måste inkludera minst en bild och högst fyrtio bilder.");
+            {
+                return BadRequest(new Response
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Ett fel har inträffat vid skapande av bostad.",
+                    Errors = new List<string> { "Bostäder måste inkludera minst en bild och högst fyrtio bilder." }
+                });
+            }
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -97,10 +104,24 @@ namespace AlphaHemAPI.Controllers
         {
             var userId = User.FindFirst(CustomClaimTypes.Uid)?.Value;
             if (!string.Equals(userId, listingUpdateDto.RealtorId))
-                return StatusCode(StatusCodes.Status403Forbidden, "Du har inte behörighet att redigera denna bostad.");
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new Response
+                {
+                    StatusCode = HttpStatusCode.Forbidden,
+                    Message = "Ett fel har inträffat vid uppdatering av bostad.",
+                    Errors = new List<string> { "Du har inte behörighet att redigera denna bostad." }
+                });
+            }
 
             if (listingUpdateDto.Images == null || listingUpdateDto.Images.Count == 0 || listingUpdateDto.Images.Count > 40)
-                return BadRequest("Bostäder måste inkludera minst en bild och högst fyrtio bilder.");
+            {
+                return BadRequest(new Response
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Message = "Ett fel har inträffat vid uppdatering av bostad.",
+                    Errors = new List<string> { "Bostäder måste inkludera minst en bild och högst fyrtio bilder." }
+                });
+            }
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -115,7 +136,8 @@ namespace AlphaHemAPI.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, response);
                 default:
                     return NoContent();
-            };
+            }
+            ;
         }
 
         // Author: Niklas

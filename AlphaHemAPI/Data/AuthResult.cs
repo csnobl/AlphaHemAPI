@@ -7,5 +7,7 @@
         public List<string>? Errors;
         public string? Token;
         public string? UserId;
+        public string? FirstName;
+        public string? LastName;
     }
 }

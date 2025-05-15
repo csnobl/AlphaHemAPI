@@ -874,7 +874,8 @@ namespace AlphaHemAPI.Data
                         SecondaryArea = 0m,
                         LotArea = 0m,
                         Address = "Klarabergsgatan 21, Stockholm",
-                        Description = "Stilren lägenhet i hjärtat av Stockholm, nära allt stadslivet erbjuder.",
+                        Description = "Stilren lägenhet i hjärtat av Stockholm, nära allt stadslivet erbjuder. Med sina ljusa ytor, genomtänkta materialval och öppna planlösning skapas en modern och trivsam atmosfär. Här bor du ett stenkast från restauranger, caféer, shopping och kollektivtrafik, samtidigt som du har närhet till grönområden och vatten." +
+                        " Perfekt för dig som söker ett bekvämt och citynära boende med hög standard",
                         Images = new List<string> { "https://i.imgur.com/rry5NrX.png", "https://i.imgur.com/OJCKvg2.png", "https://i.imgur.com/FP5OJL2.png" },
                         Category = Category.Bostadsrättslägenhet,
                         Municipality = municipalities.FirstOrDefault(m => m.Name == "Stockholm"),
@@ -891,7 +892,8 @@ namespace AlphaHemAPI.Data
                         SecondaryArea = 15m,
                         LotArea = 140m,
                         Address = "Sundbybergsvägen 3B, Solna",
-                        Description = "Rymlig och välplanerad radhuslägenhet med uteplats och nära till tunnelbana.",
+                        Description = "Rymlig och välplanerad radhuslägenhet med uteplats och nära till tunnelbana. Den smarta planlösningen ger gott om plats för både umgänge och avskildhet, med generösa sällskapsytor och bra förvaring. " +
+                        "Uteplatsen i soligt läge blir en naturlig förlängning av hemmet under sommarhalvåret – perfekt för grillkvällar eller morgonkaffet.",
                         Images = new List<string> { "https://i.imgur.com/OdbPM2T.png", "https://i.imgur.com/aZ41pSI.png", "https://i.imgur.com/y8v50T9.png" },
                         Category = Category.Bostadsrättsradhus,
                         Municipality = municipalities.FirstOrDefault(m => m.Name == "Solna"),
@@ -963,7 +965,9 @@ namespace AlphaHemAPI.Data
                         SecondaryArea = 10m,
                         LotArea = 300m,
                         Address = "Östermalmsgatan 45, Stockholm",
-                        Description = "Lyxig lägenhet med takterrass i ett av Stockholms mest eftertraktade områden.",
+                        Description = "Lyxig lägenhet med takterrass i ett av Stockholms mest eftertraktade områden. Här möts exklusiva materialval, modern arkitektur och genomtänkt design i en bostad utöver det vanliga. " +
+                        "Den privata takterrassen erbjuder storslagen utsikt och blir en perfekt plats för avkoppling, sociala tillställningar eller middagar under bar himmel. " +
+                        "Lägenheten präglas av generösa ljusinsläpp, öppna ytor och en stilren interiör. ",
                         Images = new List<string> { "https://i.imgur.com/Dy8k7A4.png", "https://i.imgur.com/LFoLcoR.png", "https://i.imgur.com/rGhkKJL.png", "https://i.imgur.com/hCvFOaG.png", "https://i.imgur.com/zmXYstv.png" },
                         Category = Category.Bostadsrättslägenhet,
                         Municipality = municipalities.FirstOrDefault(m => m.Name == "Stockholm"),

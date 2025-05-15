@@ -63,7 +63,7 @@ namespace AlphaHemAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var reponse = new AuthResponse
+            var response = new AuthResponse
             {
                 UserId = result.UserId,
                 Email = login.Email,
@@ -72,7 +72,7 @@ namespace AlphaHemAPI.Controllers
                 LastName = result.LastName
             };
 
-            return Ok(reponse);
+            return Ok(response);
         }
     }
 }

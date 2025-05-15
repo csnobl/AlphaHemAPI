@@ -67,7 +67,9 @@ namespace AlphaHemAPI.Controllers
             {
                 UserId = result.UserId,
                 Email = login.Email,
-                Token = result.Token
+                Token = result.Token,
+                FirstName = result.FirstName,
+                LastName = result.LastName
             };
 
             return Ok(reponse);

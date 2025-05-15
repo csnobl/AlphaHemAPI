@@ -108,6 +108,8 @@ namespace AlphaHemAPI.Services
                     Errors = null,
                     Token = tokenString,
                     UserId = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                 };
             }
             catch
